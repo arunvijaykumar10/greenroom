@@ -12,7 +12,11 @@ const RootComponent = () => {
 
   return (
     <StrictMode>
-     <App/>
+      {isAuthenticated ? (
+        <App />
+      ) : (
+        <LoginScreen onSuccessfulLogin={handleSuccessfulLogin} />
+      )}
     </StrictMode>
   );
 };
