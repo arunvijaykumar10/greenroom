@@ -31,7 +31,7 @@ import DashboardSetup from "./pages/DashboardSetup";
 import PayeeOnboardingSystem from "./pages/PayeeOnboardingSystem";
 import AdminTimesheetEntry from "./pages/AdminTimesheetEntry";
 import RunPayrollSimple from "./pages/PayrollSummaryCard";
-import { Bell, Settings2Icon, SettingsIcon } from "lucide-react";
+import { Bell, Settings2Icon, SettingsIcon, UserPlus } from "lucide-react";
 import ReportsWireframe from "./pages/Reports";
 import AccountActivation from "./pages/AccountActivation";
 import MFAScreen from "./pages/MFAScreen";
@@ -53,6 +53,11 @@ const App: React.FC = () => {
   };
 
   const navigationItems = [
+    {
+      label: "Registration",
+      icon: <UserPlus />,
+      path: "/company-information", // Changed from "/src/pages/DashboardSetup"
+    },
     {
       label: "Dashboard",
       icon: <DashboardIcon />,
