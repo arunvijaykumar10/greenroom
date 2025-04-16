@@ -40,7 +40,6 @@ import VendorPaymentsWireframe from "./pages/VendorPayments";
 import UnionSetup from "./pages/UnionSetup";
 import SignatureSetup from "./pages/SignatureSetup";
 import BankSetup from "./pages/BankSetup";
-import LoginScreen from "./pages/LoginScreen";
 
 const drawerWidth = 240;
 
