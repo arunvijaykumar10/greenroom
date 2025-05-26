@@ -222,8 +222,7 @@ const App: React.FC = () => {
           <Route path="/history" element={<PayrollHistory />} />
           <Route path="/payrolldetails" element={<PayrollDetail />} />
           <Route path="/unionconfiguration" element={<UnionSetupTable />} />
-
-          {/* Add a default route */}
+          <Route path="/add_users" element={<CreateUserForm />} />
         </Routes>
       </Box>
     </Box>
