@@ -47,8 +47,8 @@ import BankSetup from "./pages/BankSetup";
 import PayrollHistory from "./pages/PayrollHistory";
 import PayrollDetail from "./pages/PayrollDetail";
 import UnionSetupTable from "./pages/UnionSetupTable";
-import CreateUserForm from "./pages/CreateUserForm";
 import LoginScreen from "./pages/LoginScreen";
+import TaxCalculator from "./pages/Taxes";
 
 const drawerWidth = 240;
 
@@ -57,10 +57,9 @@ const navigationItems = [
   { label: "Payees", icon: <PeopleIcon />, path: "/payees" },
   { label: "Timesheets", icon: <ScheduleIcon />, path: "/timesheets" },
   { label: "Payroll", icon: <AttachMoneyIcon />, path: "/vendor-payments" },
-  // { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
+  { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
   { label: "Reports", icon: <BarChartIcon />, path: "/reports" },
   { label: "Settings", icon: <SettingsIcon />, path: "/union-setup" },
-  { label: "Create User", icon: <UserPlus />, path: "/add_users" },
 ];
 
 const App: React.FC = () => {
@@ -179,7 +178,7 @@ const App: React.FC = () => {
           <Route path="/payees" element={<PayeeOnboardingSystem />} />
           <Route path="/timesheets" element={<AdminTimesheetEntry />} />
           <Route path="/payroll" element={<RunPayrollSimple />} />
-          <Route path="/taxes" element={<AdminTimesheetEntry />} />
+          <Route path="/taxes" element={<TaxCalculator />} />
           <Route path="/reports" element={<ReportsWireframe />} />
           <Route
             path="/vendor-payments"
@@ -195,7 +194,6 @@ const App: React.FC = () => {
           <Route path="/history" element={<PayrollHistory />} />
           <Route path="/payrolldetails" element={<PayrollDetail />} />
           <Route path="/unionconfiguration" element={<UnionSetupTable />} />
-          <Route path="/add_users" element={<CreateUserForm />} />
         </Routes>
       </Box>
     </Box>
