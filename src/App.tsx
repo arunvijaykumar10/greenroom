@@ -57,7 +57,7 @@ const navigationItems = [
   { label: "Payees", icon: <PeopleIcon />, path: "/payees" },
   { label: "Timesheets", icon: <ScheduleIcon />, path: "/timesheets" },
   { label: "Payroll", icon: <AttachMoneyIcon />, path: "/vendor-payments" },
-  { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
+  // { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
   { label: "Reports", icon: <BarChartIcon />, path: "/reports" },
   { label: "Settings", icon: <SettingsIcon />, path: "/union-setup" },
   { label: "Create User", icon: <UserPlus />, path: "/add_users" },
