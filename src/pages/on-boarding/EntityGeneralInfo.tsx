@@ -1,35 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, TextField, MenuItem, Tabs, Tab, Grid, Button } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import React from 'react';
+import { Box, Typography, TextField, MenuItem, Grid, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { OnboardingFormData, PayeeType } from './types';
+import { OnboardingFormData } from './types';
 import AddressForm from '../AddressForm';
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`entity-tabpanel-${index}`}
-      aria-labelledby={`entity-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ pt: 3 }}>
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
 
 interface EntityGeneralInfoProps {
   formData: OnboardingFormData;

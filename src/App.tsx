@@ -67,6 +67,7 @@ import CompanySettings from "./pages/CompanySettings";
 import UnionSettings from "./pages/UnionSettings";
 import UserManagementSettings from "./pages/UserManagementSettings";
 import OnboardingPage from "./pages/on-boarding/OnboardingPage";
+import PayrollPage from "./pages/PayrollPage";
 
 const drawerWidth = 240;
 
@@ -77,16 +78,16 @@ const navigationItems = [
     path: "/dashboard",
   },
   { label: "Payees", icon: <PeopleIcon />, path: "/payees" },
-  {
-    label: "Payroll",
-    icon: <AttachMoneyIcon />,
-    children: [
-      { label: "Run Payroll", path: "/payroll" },
-      { label: "Payroll History", path: "/history" },
-      { label: "Payroll Detail", path: "/payrolldetails" },
-      { label: "Vendor Payments", path: "/vendor-payments" },
-    ],
-  },
+  // {
+  //   label: "Payroll",
+  //   icon: <AttachMoneyIcon />,
+  //   children: [
+  //     { label: "Run Payroll", path: "/payroll" },
+  //     { label: "Payroll History", path: "/history" },
+  //     { label: "Payroll Detail", path: "/payrolldetails" },
+  //     { label: "Vendor Payments", path: "/vendor-payments" },
+  //   ],
+  // },
   { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
   {
     label: "Reports",
@@ -113,6 +114,7 @@ const navigationItems = [
     ],
   },
   {label: "Onboarding", icon: <PeopleIcon />, path: "/onboarding" },
+  {label:"Payroll Setup", icon: <AttachMoneyIcon />, path: "/payrollpage" },
 ];
 
 const App = () => {
@@ -332,12 +334,12 @@ const App = () => {
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/dashboard" element={<DashboardSetup />} />
           <Route path="/payees" element={<PayeeOnboardingSystem />} />
-          <Route path="/timesheets" element={<AdminTimesheetEntry />} />
-          <Route path="/payroll" element={<RunPayrollSimple />} />
-          <Route
+          {/* <Route path="/timesheets" element={<AdminTimesheetEntry />} /> */}
+          {/* <Route path="/payroll" element={<RunPayrollSimple />} /> */}
+          {/* <Route
             path="/vendor-payments"
             element={<VendorPaymentsWireframe />}
-          />
+          /> */}
           <Route path="/register" element={<CompanyInformation />} />
           <Route path="/taxes" element={<TaxCalculator />} />
           <Route path="/reports" element={<ReportsWireframe />} />
@@ -347,8 +349,8 @@ const App = () => {
           <Route path="/union-setup" element={<UnionSetup />} />
           <Route path="/signature-setup" element={<SignatureSetup />} />
           <Route path="/bank-setup" element={<BankSetup />} />
-          <Route path="/history" element={<PayrollHistory />} />
-          <Route path="/payrolldetails" element={<PayrollDetail />} />
+          {/* <Route path="/history" element={<PayrollHistory />} />
+          <Route path="/payrolldetails" element={<PayrollDetail />} /> */}
           <Route path="/unionconfiguration" element={<UnionSetupTable />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/settings" element={<Settings />} />
@@ -360,6 +362,7 @@ const App = () => {
           <Route path="/settings/unions" element={<UnionSettings />} />
           <Route path="/settings/users" element={<UserManagementSettings />} />
           <Route path="/onboarding" element={<OnboardingPage/>}/>
+          <Route path="/payrollpage" element={<PayrollPage/>}/>
         </Routes>
       </Box>
     </Box>
