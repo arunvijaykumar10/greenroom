@@ -30,7 +30,7 @@ import {
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -43,17 +43,13 @@ import CompanyInformation from "./pages/CompanyInformation";
 import DashboardSetup from "./pages/DashboardSetup";
 import PayeeOnboardingSystem from "./pages/PayeeOnboardingSystem";
 import AdminTimesheetEntry from "./pages/AdminTimesheetEntry";
-import RunPayrollSimple from "./pages/PayrollSummaryCard";
 import ReportsWireframe from "./pages/Reports";
 import AccountActivation from "./pages/AccountActivation";
 import MFAScreen from "./pages/MFAScreen";
 import TermsReview from "./pages/TermsReview";
-import VendorPaymentsWireframe from "./pages/VendorPayments";
 import UnionSetup from "./pages/UnionSetup";
 import SignatureSetup from "./pages/SignatureSetup";
 import BankSetup from "./pages/BankSetup";
-import PayrollHistory from "./pages/PayrollHistory";
-import PayrollDetail from "./pages/PayrollDetail";
 import UnionSetupTable from "./pages/UnionSetupTable";
 import LoginScreen from "./pages/LoginScreen";
 import TaxCalculator from "./pages/Taxes";
@@ -77,16 +73,6 @@ const navigationItems = [
     path: "/dashboard",
   },
   { label: "Payees", icon: <PeopleIcon />, path: "/payees" },
-  {
-    label: "Payroll",
-    icon: <AttachMoneyIcon />,
-    children: [
-      { label: "Run Payroll", path: "/payroll" },
-      { label: "Payroll History", path: "/history" },
-      { label: "Payroll Detail", path: "/payrolldetails" },
-      { label: "Vendor Payments", path: "/vendor-payments" },
-    ],
-  },
   { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
   {
     label: "Reports",
@@ -333,11 +319,6 @@ const App = () => {
           <Route path="/dashboard" element={<DashboardSetup />} />
           <Route path="/payees" element={<PayeeOnboardingSystem />} />
           <Route path="/timesheets" element={<AdminTimesheetEntry />} />
-          <Route path="/payroll" element={<RunPayrollSimple />} />
-          <Route
-            path="/vendor-payments"
-            element={<VendorPaymentsWireframe />}
-          />
           <Route path="/register" element={<CompanyInformation />} />
           <Route path="/taxes" element={<TaxCalculator />} />
           <Route path="/reports" element={<ReportsWireframe />} />
@@ -347,8 +328,6 @@ const App = () => {
           <Route path="/union-setup" element={<UnionSetup />} />
           <Route path="/signature-setup" element={<SignatureSetup />} />
           <Route path="/bank-setup" element={<BankSetup />} />
-          <Route path="/history" element={<PayrollHistory />} />
-          <Route path="/payrolldetails" element={<PayrollDetail />} />
           <Route path="/unionconfiguration" element={<UnionSetupTable />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/settings" element={<Settings />} />
