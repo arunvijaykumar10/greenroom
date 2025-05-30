@@ -1,4 +1,5 @@
-import { Box, Container, Typography, Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, Container, Typography, Button, FormControl, InputLabel, MenuItem, Select, Paper } from '@mui/material';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import React, { useState } from 'react';
 import EmployeeGeneralInfo from './EmployeeGneralInfo';
 import EntityGeneralInfo from './EntityGeneralInfo';
@@ -230,82 +231,87 @@ const OnboardingPage: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="md">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Onboard New {formData.payeeType}
-        </Typography>
-        
-        <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <FormControl sx={{ minWidth: 200 }}>
-            <InputLabel>Payee Type</InputLabel>
-            <Select
-              value={formData.payeeType}
-              label="Payee Type"
-              onChange={handlePayeeTypeChange}
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 6, px: 1 }}>
+      <Container maxWidth="md">
+        <Paper elevation={4} sx={{ borderRadius: 4, p: { xs: 2, sm: 4 }, boxShadow: 6 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <PersonAddAlt1Icon color="primary" sx={{ fontSize: 38, mr: 2 }} />
+            <Typography variant="h4" component="h1" fontWeight={700} gutterBottom>
+              Onboard New {formData.payeeType}
+            </Typography>
+          </Box>
+          <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+            <FormControl sx={{ minWidth: 220, bgcolor: 'background.paper', borderRadius: 2 }} size="medium">
+              <InputLabel>Payee Type</InputLabel>
+              <Select
+                value={formData.payeeType}
+                label="Payee Type"
+                onChange={handlePayeeTypeChange}
+              >
+                <MenuItem value="Employee">Employee</MenuItem>
+                <MenuItem value="Loanout">Loanout</MenuItem>
+                <MenuItem value="Vendor/Contractor">Vendor/Contractor</MenuItem>
+              </Select>
+            </FormControl>
+            {formData.payeeType !== 'Employee' && (
+              <Box>
+                <Button 
+                  variant={isManualOnboarding ? "contained" : "outlined"}
+                  onClick={() => handleOnboardingMethodChange(true)}
+                  sx={{ mr: 1, borderRadius: 2, minWidth: 150 }}
+                >
+                  Manual Onboarding
+                </Button>
+                <Button 
+                  variant={!isManualOnboarding ? "contained" : "outlined"}
+                  onClick={() => handleOnboardingMethodChange(false)}
+                  sx={{ borderRadius: 2, minWidth: 150 }}
+                >
+                  Self-Onboarding
+                </Button>
+              </Box>
+            )}
+          </Box>
+          <OnboardingStepper 
+            activeStep={activeStep} 
+            payeeType={formData.payeeType}
+            isManualOnboarding={isManual}
+          />
+          <Box sx={{ mt: 3 }}>
+            {getStepContent(activeStep)}
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 5, pt: 3, borderTop: '1px solid #eee' }}>
+            <Button
+              variant="outlined"
+              onClick={handleBack}
+              disabled={activeStep === 0}
+              sx={{ borderRadius: 2, minWidth: 100 }}
             >
-              <MenuItem value="Employee">Employee</MenuItem>
-              <MenuItem value="Loanout">Loanout</MenuItem>
-              <MenuItem value="Vendor/Contractor">Vendor/Contractor</MenuItem>
-            </Select>
-          </FormControl>
-          
-          {formData.payeeType !== 'Employee' && (
-            <Box>
-              <Button 
-                variant={isManualOnboarding ? "contained" : "outlined"}
-                onClick={() => handleOnboardingMethodChange(true)}
-                sx={{ mr: 1 }}
-              >
-                Manual Onboarding
-              </Button>
-              <Button 
-                variant={!isManualOnboarding ? "contained" : "outlined"}
-                onClick={() => handleOnboardingMethodChange(false)}
-              >
-                Self-Onboarding
-              </Button>
-            </Box>
-          )}
-        </Box>
-        
-        <OnboardingStepper 
-          activeStep={activeStep} 
-          payeeType={formData.payeeType}
-          isManualOnboarding={isManual}
-        />
-        
-        {getStepContent(activeStep)}
-        
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4, pt: 2, borderTop: '1px solid #eee' }}>
-          <Button
-            variant="outlined"
-            onClick={handleBack}
-            disabled={activeStep === 0}
-          >
-            Back
-          </Button>
-          <Button
-  variant="contained"
-  onClick={handleNext}
-  disabled={
-    // Disable next button on final step
-    (isManual &&
-      ((formData.payeeType === 'Employee' || formData.payeeType === 'Loanout') && activeStep === 5) ||
-      (formData.payeeType === 'Vendor/Contractor' && activeStep === 2)
-    ) ||
-    (!isManual && activeStep > 0)
-  }
->
-  {activeStep === (isManual
-    ? (formData.payeeType === 'Vendor/Contractor' ? 2 : 5)
-    : 0)
-    ? 'Submit'
-    : 'Next'}
-</Button>
-        </Box>
-      </Box>
-    </Container>
+              Back
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleNext}
+              disabled={
+                // Disable next button on final step
+                (isManual &&
+                  ((formData.payeeType === 'Employee' || formData.payeeType === 'Loanout') && activeStep === 5) ||
+                  (formData.payeeType === 'Vendor/Contractor' && activeStep === 2)
+                ) ||
+                (!isManual && activeStep > 0)
+              }
+              sx={{ borderRadius: 2, minWidth: 100 }}
+            >
+              {activeStep === (isManual
+                ? (formData.payeeType === 'Vendor/Contractor' ? 2 : 5)
+                : 0)
+                ? 'Submit'
+                : 'Next'}
+            </Button>
+          </Box>
+        </Paper>
+      </Container>
+    </Box>
   );
 };
 

@@ -43,7 +43,6 @@ import CompanyInformation from "./pages/CompanyInformation";
 import DashboardSetup from "./pages/DashboardSetup";
 import PayeeOnboardingSystem from "./pages/PayeeOnboardingSystem";
 import AdminTimesheetEntry from "./pages/AdminTimesheetEntry";
-import ReportsWireframe from "./pages/Reports";
 import AccountActivation from "./pages/AccountActivation";
 import MFAScreen from "./pages/MFAScreen";
 import TermsReview from "./pages/TermsReview";
@@ -55,15 +54,19 @@ import LoginScreen from "./pages/LoginScreen";
 import TaxCalculator from "./pages/Taxes";
 import ReviewPage from "./pages/ReviewPage";
 import Settings from "./pages/Settings";
-import PayrollReports from "./pages/PayrollReports";
-import UnionReports from "./pages/UnionReports";
-import TaxReports from "./pages/TaxReports";
 import PaystubReports from "./pages/PaystubReports";
-import CompanySettings from "./pages/CompanySettings";
-import UnionSettings from "./pages/UnionSettings";
-import UserManagementSettings from "./pages/UserManagementSettings";
+import CompanySettings from "./pages/settings/CompanySettings";
+import UnionSettings from "./pages/settings/UnionSettings";
+import UserManagementSettings from "./pages/settings/UserManagementSettings";
 import OnboardingPage from "./pages/on-boarding/OnboardingPage";
 import PayrollPage from "./components/PayrollPage";
+import OnboardingDocuments from "./pages/settings/OnboardingDocuments";
+import PayrollSetup from "./pages/settings/PayrollSetup";
+import TaxSetup from "./pages/settings/TaxSetup";
+import PayrollReports from "./pages/reports/PayrollReports";
+import UnionReports from "./pages/reports/UnionReports";
+import TaxReports from "./pages/reports/TaxReports";
+import CheckDetails from "./pages/reports/CheckDetails";
 
 const drawerWidth = 240;
 
@@ -82,7 +85,6 @@ const navigationItems = [
       { label: "Payroll Reports", path: "/payroll_reports" },
       { label: "Union Reports", path: "/union_reports" },
       { label: "Tax Reports", path: "/tax_reports" },
-      { label: "Pay Stubs Reports", path: "/pay_stubs" },
     ],
   },
   // { label: "Review", icon: <ReviewsOutlined />, path: "/review" },
@@ -93,10 +95,9 @@ const navigationItems = [
       { label: "Company Settings", path: "/settings/company" },
       { label: "Unions", path: "/settings/unions" },
       { label: "User Management", path: "/settings/users" },
-      // { label: "Onboarding Documents", path: "/settings/onboarding-documents" },
-      // { label: "Payroll Setup", path: "/settings/payroll-setup" },
-      // { label: "Tax Setup", path: "/settings/tax-setup" },
-      // { label: "Activity Log", path: "/settings/activity-log" },
+      { label: "Onboarding Documents", path: "/settings/onboarding-documents" },
+      { label: "Payroll Setup", path: "/settings/payroll-setup" },
+      { label: "Tax Setup", path: "/settings/tax-setup" },
     ],
   },
   { label: "Onboarding", icon: <PeopleIcon />, path: "/onboarding" },
@@ -323,7 +324,6 @@ const App = () => {
           <Route path="/timesheets" element={<AdminTimesheetEntry />} />
           <Route path="/register" element={<CompanyInformation />} />
           <Route path="/taxes" element={<TaxCalculator />} />
-          <Route path="/reports" element={<ReportsWireframe />} />
           <Route path="/account-activation" element={<AccountActivation />} />
           <Route path="/mfa" element={<MFAScreen />} />
           <Route path="/terms" element={<TermsReview />} />
@@ -343,6 +343,16 @@ const App = () => {
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/payroll-page" element={<PayrollPage />} />
           {/* Add more routes as needed */}
+          <Route
+            path="/settings/onboarding-documents"
+            element={<OnboardingDocuments />}
+          />
+          <Route path="/settings/payroll-setup" element={<PayrollSetup />} />
+          <Route path="/settings/tax-setup" element={<TaxSetup />} />
+          <Route
+            path="/reports/check-register/:payrollId"
+            element={<CheckDetails />}
+          />
         </Routes>
       </Box>
     </Box>
