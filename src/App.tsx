@@ -30,7 +30,7 @@ import {
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -42,16 +42,12 @@ import { Bell, SettingsIcon } from "lucide-react";
 import DashboardSetup from "./pages/DashboardSetup";
 import PayeeOnboardingSystem from "./pages/PayeeOnboardingSystem";
 import AdminTimesheetEntry from "./pages/AdminTimesheetEntry";
-import RunPayrollSimple from "./pages/PayrollSummaryCard";
 import AccountActivation from "./pages/AccountActivation";
 import MFAScreen from "./pages/MFAScreen";
 import TermsReview from "./pages/TermsReview";
-import VendorPaymentsWireframe from "./pages/VendorPayments";
 import UnionSetup from "./pages/UnionSetup";
 import SignatureSetup from "./pages/SignatureSetup";
 import BankSetup from "./pages/BankSetup";
-import PayrollHistory from "./pages/PayrollHistory";
-import PayrollDetail from "./pages/PayrollDetail";
 import UnionSetupTable from "./pages/UnionSetupTable";
 import LoginScreen from "./pages/LoginScreen";
 import TaxCalculator from "./pages/Taxes";
@@ -61,6 +57,7 @@ import CompanySettings from "./pages/settings/CompanySettings";
 import UnionSettings from "./pages/settings/UnionSettings";
 import UserManagementSettings from "./pages/settings/UserManagementSettings";
 import OnboardingPage from "./pages/on-boarding/OnboardingPage";
+import PayrollPage from "./components/PayrollPage";
 import OnboardingDocuments from "./pages/settings/OnboardingDocuments";
 import PayrollSetup from "./pages/settings/PayrollSetup";
 import TaxSetup from "./pages/settings/TaxSetup";
@@ -89,16 +86,6 @@ const navigationItems = [
     ],
   },
   { label: "Payees", icon: <PeopleIcon />, path: "/payees" },
-  {
-    label: "Payroll",
-    icon: <AttachMoneyIcon />,
-    children: [
-      { label: "Run Payroll", path: "/payroll" },
-      { label: "Payroll History", path: "/history" },
-      { label: "Payroll Detail", path: "/payrolldetails" },
-      { label: "Vendor Payments", path: "/vendor-payments" },
-    ],
-  },
   { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
   {
     label: "Reports",
@@ -121,6 +108,7 @@ const navigationItems = [
       { label: "Tax Setup", path: "/settings/tax-setup" },
     ],
   },
+  { label: "Payroll", icon: <PeopleIcon />, path: "/payroll-page" },
 ];
 
 const App = () => {
@@ -342,11 +330,6 @@ const App = () => {
           <Route path="/dashboard" element={<DashboardSetup />} />
           <Route path="/payees" element={<PayeeOnboardingSystem />} />
           <Route path="/timesheets" element={<AdminTimesheetEntry />} />
-          <Route path="/payroll" element={<RunPayrollSimple />} />
-          <Route
-            path="/vendor-payments"
-            element={<VendorPaymentsWireframe />}
-          />
           <Route path="/taxes" element={<TaxCalculator />} />
           <Route path="/account-activation" element={<AccountActivation />} />
           <Route path="/mfa" element={<MFAScreen />} />
@@ -354,8 +337,6 @@ const App = () => {
           <Route path="/union-setup" element={<UnionSetup />} />
           <Route path="/signature-setup" element={<SignatureSetup />} />
           <Route path="/bank-setup" element={<BankSetup />} />
-          <Route path="/history" element={<PayrollHistory />} />
-          <Route path="/payrolldetails" element={<PayrollDetail />} />
           <Route path="/unionconfiguration" element={<UnionSetupTable />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/payroll_reports" element={<PayrollReports />} />
@@ -366,6 +347,8 @@ const App = () => {
           <Route path="/settings/unions" element={<UnionSettings />} />
           <Route path="/settings/users" element={<UserManagementSettings />} />
           <Route path="/onboarding/employment" element={<OnboardingPage />} />
+          <Route path="/payroll-page" element={<PayrollPage />} />
+          {/* Add more routes as needed */}
           <Route
             path="/settings/onboarding-documents"
             element={<OnboardingDocuments />}
