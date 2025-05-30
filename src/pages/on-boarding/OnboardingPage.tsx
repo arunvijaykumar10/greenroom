@@ -1,38 +1,51 @@
-import { Box, Container, Typography, Button, FormControl, InputLabel, MenuItem, Select, Paper } from '@mui/material';
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import React, { useState } from 'react';
-import EmployeeGeneralInfo from './EmployeeGneralInfo';
-import EntityGeneralInfo from './EntityGeneralInfo';
-import FederalTaxWithholdings from './FederalTaxWithholdings';
-import NYStateTaxWithholdings from './NYStateTaxWithholdings';
-import OnboardingConfirmation from './OnboardingConfirmation';
-import OnboardingStepper from './OnboardingStepper';
-import PaymentDetails from './PaymentDetails';
-import ResidentialStateTax from './ResidentialStateTax';
-import RequiredStartWork from './RequiredStartWork';
-import { OnboardingFormData, PayeeType } from './types';
-import VendorTaxpayerInfo from './VendorTaxpayerInfo';
-import WorkAuthorization from './WorkAuthorization';
+import {
+  Box,
+  Container,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Paper,
+} from "@mui/material";
+import React, { useState } from "react";
+import EmployeeGeneralInfo from "./EmployeeGneralInfo";
+import EntityGeneralInfo from "./EntityGeneralInfo";
+import FederalTaxWithholdings from "./FederalTaxWithholdings";
+import NYStateTaxWithholdings from "./NYStateTaxWithholdings";
+import OnboardingConfirmation from "./OnboardingConfirmation";
+import OnboardingStepper from "./OnboardingStepper";
+import PaymentDetails from "./PaymentDetails";
+import ResidentialStateTax from "./ResidentialStateTax";
+import RequiredStartWork from "./RequiredStartWork";
+import { OnboardingFormData, PayeeType } from "./types";
+import VendorTaxpayerInfo from "./VendorTaxpayerInfo";
+import WorkAuthorization from "./WorkAuthorization";
 
 const OnboardingPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState<OnboardingFormData>({
-    payeeType: 'Employee'
+    payeeType: "Employee",
   });
   const [isComplete, setIsComplete] = useState(false);
   const [isManualOnboarding, setIsManualOnboarding] = useState(true);
   // Always use manual onboarding for Employee type
-  const isManual = formData.payeeType === 'Employee' ? true : isManualOnboarding;
+  const isManual =
+    formData.payeeType === "Employee" ? true : isManualOnboarding;
 
   const handleNext = () => {
     const nextStep = activeStep + 1;
-    
+
     // Check if we're on the final step
     if (isManual) {
-      if ((formData.payeeType === 'Employee' || formData.payeeType === 'Loanout') && nextStep > 5) {
+      if (
+        (formData.payeeType === "Employee" ||
+          formData.payeeType === "Loanout") &&
+        nextStep > 5
+      ) {
         handleSubmit();
         return;
-      } else if (formData.payeeType === 'Vendor/Contractor' && nextStep > 2) {
+      } else if (formData.payeeType === "Vendor/Contractor" && nextStep > 2) {
         handleSubmit();
         return;
       }
@@ -41,7 +54,7 @@ const OnboardingPage: React.FC = () => {
       handleSubmit();
       return;
     }
-    
+
     setActiveStep(nextStep);
   };
 
@@ -50,36 +63,37 @@ const OnboardingPage: React.FC = () => {
   };
 
   const handleFormChange = (data: Partial<OnboardingFormData>) => {
-    setFormData(prev => ({ ...prev, ...data }));
+    setFormData((prev) => ({ ...prev, ...data }));
   };
 
   const handleSubmit = () => {
     // Here you would typically send the data to your backend
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
     setIsComplete(true);
   };
 
   const handlePayeeTypeChange = (event: any) => {
     const newPayeeType = event.target.value as PayeeType;
-    setFormData(prev => ({ 
-      ...prev, 
+    setFormData((prev) => ({
+      ...prev,
       payeeType: newPayeeType,
       // Reset fields that are specific to other payee types
-      ssn: newPayeeType !== 'Employee' ? undefined : prev.ssn,
-      ein: newPayeeType !== 'Employee' ? undefined : prev.ein,
-      dateOfBirth: newPayeeType !== 'Employee' ? undefined : prev.dateOfBirth,
-      homeAddress: newPayeeType === 'Employee' ? prev.homeAddress : undefined,
-      businessAddress: newPayeeType !== 'Employee' ? prev.businessAddress : undefined,
+      ssn: newPayeeType !== "Employee" ? undefined : prev.ssn,
+      ein: newPayeeType !== "Employee" ? undefined : prev.ein,
+      dateOfBirth: newPayeeType !== "Employee" ? undefined : prev.dateOfBirth,
+      homeAddress: newPayeeType === "Employee" ? prev.homeAddress : undefined,
+      businessAddress:
+        newPayeeType !== "Employee" ? prev.businessAddress : undefined,
     }));
     setActiveStep(0);
   };
 
   const handleOnboardingMethodChange = (isManual: boolean) => {
     // Don't allow self-onboarding for Employee type
-    if (formData.payeeType === 'Employee' && !isManual) {
+    if (formData.payeeType === "Employee" && !isManual) {
       return;
     }
-    
+
     setIsManualOnboarding(isManual);
     if (!isManual) {
       // If switching to self-onboarding, we'll only need the first step
@@ -102,110 +116,116 @@ const OnboardingPage: React.FC = () => {
     // For manual onboarding, show the full flow
     switch (step) {
       case 0:
-        if (formData.payeeType === 'Employee') {
+        if (formData.payeeType === "Employee") {
           return (
-            <EmployeeGeneralInfo 
-              formData={formData} 
-              onFormChange={handleFormChange} 
+            <EmployeeGeneralInfo
+              formData={formData}
+              onFormChange={handleFormChange}
               onNext={handleNext}
               isManualOnboarding={isManual}
             />
           );
         } else {
           return (
-            <EntityGeneralInfo 
-              formData={formData} 
-              onFormChange={handleFormChange} 
+            <EntityGeneralInfo
+              formData={formData}
+              onFormChange={handleFormChange}
               onNext={handleNext}
               isManualOnboarding={isManual}
             />
           );
         }
       case 1:
-        if (formData.payeeType === 'Vendor/Contractor') {
+        if (formData.payeeType === "Vendor/Contractor") {
           return (
-            <VendorTaxpayerInfo 
-              formData={formData} 
-              onFormChange={handleFormChange} 
-              onBack={handleBack} 
+            <VendorTaxpayerInfo
+              formData={formData}
+              onFormChange={handleFormChange}
+              onBack={handleBack}
               onNext={handleNext}
             />
           );
-        } else if (formData.payeeType === 'Loanout') {
+        } else if (formData.payeeType === "Loanout") {
           return (
-            <WorkAuthorization 
-              formData={formData} 
-              onFormChange={handleFormChange} 
-              onBack={handleBack} 
+            <WorkAuthorization
+              formData={formData}
+              onFormChange={handleFormChange}
+              onBack={handleBack}
               onNext={handleNext}
             />
           );
         } else {
           return (
-            <WorkAuthorization 
-              formData={formData} 
-              onFormChange={handleFormChange} 
-              onBack={handleBack} 
+            <WorkAuthorization
+              formData={formData}
+              onFormChange={handleFormChange}
+              onBack={handleBack}
               onNext={handleNext}
             />
           );
         }
       case 2:
-        if (formData.payeeType === 'Employee') {
+        if (formData.payeeType === "Employee") {
           return (
-            <FederalTaxWithholdings 
-              formData={formData} 
-              onFormChange={handleFormChange} 
-              onBack={handleBack} 
+            <FederalTaxWithholdings
+              formData={formData}
+              onFormChange={handleFormChange}
+              onBack={handleBack}
               onNext={handleNext}
             />
           );
-        } else if (formData.payeeType === 'Loanout') {
+        } else if (formData.payeeType === "Loanout") {
           return (
-            <VendorTaxpayerInfo 
-              formData={formData} 
-              onFormChange={handleFormChange} 
-              onBack={handleBack} 
+            <VendorTaxpayerInfo
+              formData={formData}
+              onFormChange={handleFormChange}
+              onBack={handleBack}
               onNext={handleNext}
             />
           );
         } else {
           return (
-            <PaymentDetails 
-              formData={formData} 
-              onFormChange={handleFormChange} 
-              onBack={handleBack} 
+            <PaymentDetails
+              formData={formData}
+              onFormChange={handleFormChange}
+              onBack={handleBack}
               onSubmit={handleSubmit}
             />
           );
         }
       case 3:
-        if (formData.payeeType === 'Employee' || formData.payeeType === 'Loanout') {
+        if (
+          formData.payeeType === "Employee" ||
+          formData.payeeType === "Loanout"
+        ) {
           return (
-            <NYStateTaxWithholdings 
-              formData={formData} 
-              onFormChange={handleFormChange} 
-              onBack={handleBack} 
+            <NYStateTaxWithholdings
+              formData={formData}
+              onFormChange={handleFormChange}
+              onBack={handleBack}
               onNext={handleNext}
             />
           );
         } else {
           return (
-            <PaymentDetails 
-              formData={formData} 
-              onFormChange={handleFormChange} 
-              onBack={handleBack} 
+            <PaymentDetails
+              formData={formData}
+              onFormChange={handleFormChange}
+              onBack={handleBack}
               onSubmit={handleSubmit}
             />
           );
         }
       case 4:
-        if (formData.payeeType === 'Employee' || formData.payeeType === 'Loanout') {
+        if (
+          formData.payeeType === "Employee" ||
+          formData.payeeType === "Loanout"
+        ) {
           return (
-            <ResidentialStateTax 
-              formData={formData} 
-              onFormChange={handleFormChange} 
-              onBack={handleBack} 
+            <ResidentialStateTax
+              formData={formData}
+              onFormChange={handleFormChange}
+              onBack={handleBack}
               onNext={handleNext}
             />
           );
@@ -214,15 +234,15 @@ const OnboardingPage: React.FC = () => {
         }
       case 5:
         return (
-          <PaymentDetails 
-            formData={formData} 
-            onFormChange={handleFormChange} 
-            onBack={handleBack} 
+          <PaymentDetails
+            formData={formData}
+            onFormChange={handleFormChange}
+            onBack={handleBack}
             onSubmit={handleSubmit}
           />
         );
       default:
-        throw new Error('Unknown step');
+        throw new Error("Unknown step");
     }
   };
 
@@ -231,17 +251,38 @@ const OnboardingPage: React.FC = () => {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 6, px: 1 }}>
-      <Container maxWidth="md">
-        <Paper elevation={4} sx={{ borderRadius: 4, p: { xs: 2, sm: 4 }, boxShadow: 6 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <PersonAddAlt1Icon color="primary" sx={{ fontSize: 38, mr: 2 }} />
-            <Typography variant="h4" component="h1" fontWeight={700} gutterBottom>
-              Onboard New {formData.payeeType}
-            </Typography>
-          </Box>
-          <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
-            <FormControl sx={{ minWidth: 220, bgcolor: 'background.paper', borderRadius: 2 }} size="medium">
+    <Box sx={{ minHeight: "100vh", bgcolor: "#f5faff", py: 6, px: 0 }}>
+      <Container maxWidth={false} disableGutters sx={{ px: { xs: 0, sm: 4 } }}>
+        <Paper
+          elevation={6}
+          sx={{
+            borderRadius: 4,
+            p: { xs: 2, sm: 5 },
+            boxShadow: 8,
+            maxWidth: 1280,
+            mx: "auto",
+            bgcolor: "#fff",
+          }}
+        >
+          <Box
+            sx={{
+              mb: 4,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 2,
+            }}
+          >
+            <FormControl
+              sx={{
+                minWidth: 220,
+                bgcolor: "background.paper",
+                borderRadius: 2,
+                boxShadow: 1,
+              }}
+              size="medium"
+            >
               <InputLabel>Payee Type</InputLabel>
               <Select
                 value={formData.payeeType}
@@ -253,34 +294,51 @@ const OnboardingPage: React.FC = () => {
                 <MenuItem value="Vendor/Contractor">Vendor/Contractor</MenuItem>
               </Select>
             </FormControl>
-            {formData.payeeType !== 'Employee' && (
+            {formData.payeeType !== "Employee" && (
               <Box>
-                <Button 
+                <Button
                   variant={isManualOnboarding ? "contained" : "outlined"}
                   onClick={() => handleOnboardingMethodChange(true)}
-                  sx={{ mr: 1, borderRadius: 2, minWidth: 150 }}
+                  sx={{
+                    mr: 1,
+                    borderRadius: 2,
+                    minWidth: 150,
+                    boxShadow: isManualOnboarding ? 2 : 0,
+                  }}
                 >
                   Manual Onboarding
                 </Button>
-                <Button 
+                <Button
                   variant={!isManualOnboarding ? "contained" : "outlined"}
                   onClick={() => handleOnboardingMethodChange(false)}
-                  sx={{ borderRadius: 2, minWidth: 150 }}
+                  sx={{
+                    borderRadius: 2,
+                    minWidth: 150,
+                    boxShadow: !isManualOnboarding ? 2 : 0,
+                  }}
                 >
                   Self-Onboarding
                 </Button>
               </Box>
             )}
           </Box>
-          <OnboardingStepper 
-            activeStep={activeStep} 
+          <OnboardingStepper
+            activeStep={activeStep}
             payeeType={formData.payeeType}
             isManualOnboarding={isManual}
           />
-          <Box sx={{ mt: 3 }}>
-            {getStepContent(activeStep)}
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 5, pt: 3, borderTop: '1px solid #eee' }}>
+          <Box sx={{ mt: 3 }}>{getStepContent(activeStep)}</Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mt: 5,
+              px: 3,
+              py: 2,
+              borderRadius: 2,
+              boxShadow: 1,
+            }}
+          >
             <Button
               variant="outlined"
               onClick={handleBack}
@@ -295,18 +353,23 @@ const OnboardingPage: React.FC = () => {
               disabled={
                 // Disable next button on final step
                 (isManual &&
-                  ((formData.payeeType === 'Employee' || formData.payeeType === 'Loanout') && activeStep === 5) ||
-                  (formData.payeeType === 'Vendor/Contractor' && activeStep === 2)
-                ) ||
+                  (formData.payeeType === "Employee" ||
+                    formData.payeeType === "Loanout") &&
+                  activeStep === 5) ||
+                (formData.payeeType === "Vendor/Contractor" &&
+                  activeStep === 2) ||
                 (!isManual && activeStep > 0)
               }
-              sx={{ borderRadius: 2, minWidth: 100 }}
+              sx={{ borderRadius: 2, minWidth: 100, boxShadow: 2 }}
             >
-              {activeStep === (isManual
-                ? (formData.payeeType === 'Vendor/Contractor' ? 2 : 5)
+              {activeStep ===
+              (isManual
+                ? formData.payeeType === "Vendor/Contractor"
+                  ? 2
+                  : 5
                 : 0)
-                ? 'Submit'
-                : 'Next'}
+                ? "Submit"
+                : "Next"}
             </Button>
           </Box>
         </Paper>
