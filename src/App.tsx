@@ -67,6 +67,7 @@ import PayrollReports from "./pages/reports/PayrollReports";
 import UnionReports from "./pages/reports/UnionReports";
 import TaxReports from "./pages/reports/TaxReports";
 import CheckDetails from "./pages/reports/CheckDetails";
+import PayeesPage from "./pages/payee/PayeesPage";
 
 const drawerWidth = 240;
 
@@ -320,7 +321,7 @@ const App = () => {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/dashboard" element={<DashboardSetup />} />
-          <Route path="/payees" element={<PayeeOnboardingSystem />} />
+          <Route path="/payees" element={<PayeesPage />} />
           <Route path="/timesheets" element={<AdminTimesheetEntry />} />
           <Route path="/register" element={<CompanyInformation />} />
           <Route path="/taxes" element={<TaxCalculator />} />
