@@ -35,12 +35,11 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Bell, SettingsIcon } from "lucide-react";
+import { Bell, DollarSign, SettingsIcon } from "lucide-react";
 // import { ReviewsOutlined } from "@mui/icons-material";
 
 // Pages
 import DashboardSetup from "./pages/DashboardSetup";
-import PayeeOnboardingSystem from "./pages/PayeeOnboardingSystem";
 import AdminTimesheetEntry from "./pages/AdminTimesheetEntry";
 import AccountActivation from "./pages/AccountActivation";
 import MFAScreen from "./pages/MFAScreen";
@@ -65,6 +64,7 @@ import PayrollReports from "./pages/reports/PayrollReports";
 import UnionReports from "./pages/reports/UnionReports";
 import TaxReports from "./pages/reports/TaxReports";
 import CheckDetails from "./pages/reports/CheckDetails";
+import PayeesPage from "./pages/payee/PayeesPage";
 import { PersonAdd } from "@mui/icons-material";
 import RegisterPage from "./pages/register/RegisterPage";
 import AdminOnboarding from "./pages/on-boarding/AdminOnboarding";
@@ -82,10 +82,11 @@ const navigationItems = [
     icon: <PersonAdd />,
     children: [
       { label: "Employee", path: "/onboarding/employment" },
-      { label: "Admin", path: "/onboarding/admin" },
+      // { label: "Admin", path: "/onboarding/admin" },
     ],
   },
   { label: "Payees", icon: <PeopleIcon />, path: "/payees" },
+  { label: "Payroll", icon: <DollarSign/>, path: "/payroll-page" },
   { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
   {
     label: "Reports",
@@ -108,7 +109,6 @@ const navigationItems = [
       { label: "Tax Setup", path: "/settings/tax-setup" },
     ],
   },
-  { label: "Payroll", icon: <PeopleIcon />, path: "/payroll-page" },
 ];
 
 const App = () => {
@@ -328,7 +328,7 @@ const App = () => {
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/dashboard" element={<DashboardSetup />} />
-          <Route path="/payees" element={<PayeeOnboardingSystem />} />
+          <Route path="/payees" element={<PayeesPage />} />
           <Route path="/timesheets" element={<AdminTimesheetEntry />} />
           <Route path="/taxes" element={<TaxCalculator />} />
           <Route path="/account-activation" element={<AccountActivation />} />
