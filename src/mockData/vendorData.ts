@@ -1,0 +1,132 @@
+import { Payee } from '../components/payrollTypes';
+
+export const mockVendors: Payee[] = [
+  {
+    id: 'v1',
+    name: 'Lighting Solutions Inc.',
+    type: 'vendor',
+    status: 'onboarded',
+    jobTitle: 'Lighting Equipment Provider',
+    rateType: 'daily',
+    rate: 500,
+    adjustments: [],
+    increments: [],
+    deductions: [],
+    allowances: [],
+    reimbursements: [],
+    selected: true
+  },
+  {
+    id: 'v2',
+    name: 'Sound Masters LLC',
+    type: 'vendor',
+    status: 'onboarded',
+    jobTitle: 'Audio Equipment Provider',
+    rateType: 'weekly',
+    rate: 2500,
+    adjustments: [],
+    increments: [],
+    deductions: [],
+    allowances: [],
+    reimbursements: [],
+    selected: true
+  },
+  {
+    id: 'c1',
+    name: 'Jane Smith',
+    type: 'contractor',
+    status: 'onboarded',
+    jobTitle: 'Set Designer',
+    rateType: 'hourly',
+    rate: 75,
+    adjustments: [],
+    increments: [],
+    deductions: [],
+    allowances: [],
+    reimbursements: [
+      {
+        id: 'r1',
+        amount: 250,
+        code: 'MATERIALS',
+        class: 'SET',
+        note: 'Materials for set construction'
+      }
+    ],
+    selected: true
+  },
+  {
+    id: 'a1',
+    name: 'Creative Talent Agency',
+    type: 'agent',
+    status: 'onboarded',
+    jobTitle: 'Talent Agent',
+    rateType: 'hourly',
+    rate: 0,
+    adjustments: [],
+    increments: [],
+    deductions: [],
+    allowances: [],
+    reimbursements: [],
+    selected: true
+  },
+  {
+    id: 'm1',
+    name: 'Star Management Group',
+    type: 'manager',
+    status: 'onboarded',
+    jobTitle: 'Talent Manager',
+    rateType: 'hourly',
+    rate: 0,
+    adjustments: [],
+    increments: [],
+    deductions: [],
+    allowances: [],
+    reimbursements: [],
+    selected: true
+  },
+  {
+    id: 'ct1',
+    name: 'Child Actor Trust Fund',
+    type: 'child-trust',
+    status: 'onboarded',
+    jobTitle: 'Child Trust',
+    rateType: 'hourly',
+    rate: 0,
+    adjustments: [],
+    increments: [],
+    deductions: [],
+    allowances: [],
+    reimbursements: [],
+    selected: true
+  },
+  {
+    id: 'v3',
+    name: 'Costume Creations',
+    type: 'vendor',
+    status: 'not-onboarded',
+    jobTitle: 'Costume Provider',
+    rateType: 'weekly',
+    rate: 1800,
+    adjustments: [],
+    increments: [],
+    deductions: [],
+    allowances: [],
+    reimbursements: [],
+    selected: false
+  },
+  {
+    id: 'c2',
+    name: 'Michael Johnson',
+    type: 'contractor',
+    status: 'not-onboarded',
+    jobTitle: 'Special Effects',
+    rateType: 'daily',
+    rate: 650,
+    adjustments: [],
+    increments: [],
+    deductions: [],
+    allowances: [],
+    reimbursements: [],
+    selected: false
+  }
+];
