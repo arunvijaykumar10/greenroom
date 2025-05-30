@@ -32,16 +32,14 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import BarChartIcon from "@mui/icons-material/BarChart";
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Bell, SettingsIcon } from "lucide-react";
+import { Bell, DollarSign, SettingsIcon } from "lucide-react";
 // import { ReviewsOutlined } from "@mui/icons-material";
 
 // Pages
-import CompanyInformation from "./pages/CompanyInformation";
 import DashboardSetup from "./pages/DashboardSetup";
-import PayeeOnboardingSystem from "./pages/PayeeOnboardingSystem";
 import AdminTimesheetEntry from "./pages/AdminTimesheetEntry";
 import AccountActivation from "./pages/AccountActivation";
 import MFAScreen from "./pages/MFAScreen";
@@ -53,7 +51,6 @@ import UnionSetupTable from "./pages/UnionSetupTable";
 import LoginScreen from "./pages/LoginScreen";
 import TaxCalculator from "./pages/Taxes";
 import ReviewPage from "./pages/ReviewPage";
-import Settings from "./pages/Settings";
 import PaystubReports from "./pages/PaystubReports";
 import CompanySettings from "./pages/settings/CompanySettings";
 import UnionSettings from "./pages/settings/UnionSettings";
@@ -68,6 +65,9 @@ import UnionReports from "./pages/reports/UnionReports";
 import TaxReports from "./pages/reports/TaxReports";
 import CheckDetails from "./pages/reports/CheckDetails";
 import PayeesPage from "./pages/payee/PayeesPage";
+import { PersonAdd } from "@mui/icons-material";
+import RegisterPage from "./pages/register/RegisterPage";
+import AdminOnboarding from "./pages/on-boarding/AdminOnboarding";
 
 const drawerWidth = 240;
 
@@ -77,18 +77,26 @@ const navigationItems = [
     icon: <DashboardIcon />,
     path: "/dashboard",
   },
+  {
+    label: "Onboarding",
+    icon: <PersonAdd />,
+    children: [
+      { label: "Employee", path: "/onboarding/employment" },
+      // { label: "Admin", path: "/onboarding/admin" },
+    ],
+  },
   { label: "Payees", icon: <PeopleIcon />, path: "/payees" },
+  { label: "Payroll", icon: <DollarSign/>, path: "/payroll-page" },
   { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
   {
     label: "Reports",
-    icon: <BarChartIcon />,
+    icon: <AssessmentIcon />,
     children: [
       { label: "Payroll Reports", path: "/payroll_reports" },
       { label: "Union Reports", path: "/union_reports" },
       { label: "Tax Reports", path: "/tax_reports" },
     ],
   },
-  // { label: "Review", icon: <ReviewsOutlined />, path: "/review" },
   {
     label: "Settings",
     icon: <SettingsIcon />,
@@ -101,8 +109,6 @@ const navigationItems = [
       { label: "Tax Setup", path: "/settings/tax-setup" },
     ],
   },
-  { label: "Onboarding", icon: <PeopleIcon />, path: "/onboarding" },
-  {label: "Payroll", icon: <PeopleIcon />, path: "/payroll-page" },
 ];
 
 const App = () => {
@@ -320,10 +326,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginScreen />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/dashboard" element={<DashboardSetup />} />
           <Route path="/payees" element={<PayeesPage />} />
           <Route path="/timesheets" element={<AdminTimesheetEntry />} />
-          <Route path="/register" element={<CompanyInformation />} />
           <Route path="/taxes" element={<TaxCalculator />} />
           <Route path="/account-activation" element={<AccountActivation />} />
           <Route path="/mfa" element={<MFAScreen />} />
@@ -333,7 +339,6 @@ const App = () => {
           <Route path="/bank-setup" element={<BankSetup />} />
           <Route path="/unionconfiguration" element={<UnionSetupTable />} />
           <Route path="/review" element={<ReviewPage />} />
-          <Route path="/settings" element={<Settings />} />
           <Route path="/payroll_reports" element={<PayrollReports />} />
           <Route path="/union_reports" element={<UnionReports />} />
           <Route path="/tax_reports" element={<TaxReports />} />
@@ -341,13 +346,14 @@ const App = () => {
           <Route path="/settings/company" element={<CompanySettings />} />
           <Route path="/settings/unions" element={<UnionSettings />} />
           <Route path="/settings/users" element={<UserManagementSettings />} />
-          <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/onboarding/employment" element={<OnboardingPage />} />
           <Route path="/payroll-page" element={<PayrollPage />} />
           {/* Add more routes as needed */}
           <Route
             path="/settings/onboarding-documents"
             element={<OnboardingDocuments />}
           />
+          <Route path="/onboarding/admin" element={<AdminOnboarding />} />
           <Route path="/settings/payroll-setup" element={<PayrollSetup />} />
           <Route path="/settings/tax-setup" element={<TaxSetup />} />
           <Route

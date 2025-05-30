@@ -72,3 +72,42 @@ export interface Payroll {
 }
 
 export type Order = "asc" | "desc";
+
+export interface ReportPayee {
+  role: string;
+  name: string;
+  ssn: string;
+  salary: number;
+  adjustments: number;
+  grossSalary: number;
+  pensionableSalary: number;
+  dues: number;
+  health: number;
+  pension: number;
+  k401Employer: number;
+  k401: number;
+  participantDeferral: number;
+  k401Voluntary: number;
+  notes: string;
+}
+
+export interface UnionReport {
+  id: string;
+  fromEntity: {
+    companyName: string;
+    address: string;
+    ein: string;
+    managerName: string;
+    phone: string;
+    email: string;
+  };
+  toEntity: {
+    unionName: string;
+    address: string;
+  };
+  workWeekEnding: string;
+  payrollWeekEnding: string;
+  agreementNumber: string;
+  employerId: string;
+  payees: ReportPayee[];
+}

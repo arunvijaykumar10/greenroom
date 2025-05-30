@@ -72,7 +72,7 @@ const OnboardingDocuments = () => {
       <Box sx={{ p: 4 }}>
         {/* Boilerplate Docs Section */}
         <Typography variant="h6" sx={{ mb: 2 }}>
-          Boilerplate Documents
+          Mandatory Documents
         </Typography>
         <List>
           {boilerplateDocs.map((doc) => (

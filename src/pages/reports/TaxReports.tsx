@@ -18,7 +18,7 @@ import {
 interface TaxReport {
   id: string;
   filingDate: string;
-  type: "Federal" | "NY" | "NJ" | "CT" | "PA";
+  type: "Federal" | "NY" | "NJ" | "CT" | "PA" | "CA" | "TX";
   period: string;
   form: string;
 }
@@ -26,28 +26,77 @@ interface TaxReport {
 const mockTaxReports: TaxReport[] = [
   {
     id: "TR001",
-    filingDate: "2024-04-15",
+    filingDate: "2023-01-31",
+    type: "Federal",
+    period: "Year 2022",
+    form: "Form W-2",
+  },
+  {
+    id: "TR002",
+    filingDate: "2023-04-15",
+    type: "Federal",
+    period: "Q1 2023",
+    form: "Form 941",
+  },
+  {
+    id: "TR003",
+    filingDate: "2023-07-31",
+    type: "NY",
+    period: "Q2 2023",
+    form: "Form NYS-45",
+  },
+  {
+    id: "TR004",
+    filingDate: "2023-10-31",
+    type: "PA",
+    period: "Q3 2023",
+    form: "Form REV-1667",
+  },
+  {
+    id: "TR005",
+    filingDate: "2024-01-15",
+    type: "CA",
+    period: "Year 2023",
+    form: "Form DE-9C",
+  },
+  {
+    id: "TR006",
+    filingDate: "2024-04-30",
     type: "Federal",
     period: "Q1 2024",
     form: "Form 941",
   },
   {
-    id: "TR002",
-    filingDate: "2024-01-31",
+    id: "TR007",
+    filingDate: "2024-07-15",
+    type: "TX",
+    period: "Q2 2024",
+    form: "Form C-3",
+  },
+  {
+    id: "TR008",
+    filingDate: "2024-10-31",
     type: "NY",
-    period: "Year 2023",
+    period: "Q3 2024",
     form: "Form NYS-45",
   },
   {
-    id: "TR003",
-    filingDate: "2024-07-10",
-    type: "PA",
-    period: "Q2 2024",
-    form: "Form REV-1667",
+    id: "TR009",
+    filingDate: "2025-01-31",
+    type: "Federal",
+    period: "Year 2024",
+    form: "Form W-2",
+  },
+  {
+    id: "TR010",
+    filingDate: "2025-04-15",
+    type: "CA",
+    period: "Q1 2025",
+    form: "Form DE-9",
   },
 ];
 
-const typeOptions = ["All", "Federal", "NY", "NJ", "CT", "PA"];
+const typeOptions = ["All", "Federal", "NY", "NJ", "CT", "PA", "CA", "TX"];
 const periodOptions = ["All", "Quarterly", "Yearly"];
 
 const TaxReportsPage: React.FC = () => {
@@ -73,11 +122,17 @@ const TaxReportsPage: React.FC = () => {
 
   return (
     <Box p={3}>
-      <Typography variant="h4" gutterBottom sx={{ color: "#1976d2", fontWeight: 700 }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ color: "#1976d2", fontWeight: 700 }}
+      >
         Company Tax Reports
       </Typography>
 
-      <Paper sx={{ p: 2, mb: 3, borderRadius: 3, boxShadow: 2, bgcolor: "#f5faff" }}>
+      <Paper
+        sx={{ p: 2, mb: 3, borderRadius: 3, boxShadow: 2, bgcolor: "#f5faff" }}
+      >
         <Grid container spacing={2}>
           <Grid item xs={12} md={2}>
             <TextField
@@ -141,7 +196,11 @@ const TaxReportsPage: React.FC = () => {
           </TableHead>
           <TableBody>
             {filteredReports.map((report) => (
-              <TableRow key={report.id} hover sx={{ transition: "background 0.2s" }}>
+              <TableRow
+                key={report.id}
+                hover
+                sx={{ transition: "background 0.2s" }}
+              >
                 <TableCell>{report.filingDate}</TableCell>
                 <TableCell>{report.type}</TableCell>
                 <TableCell>{report.period}</TableCell>
