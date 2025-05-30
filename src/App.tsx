@@ -63,6 +63,7 @@ import CompanySettings from "./pages/CompanySettings";
 import UnionSettings from "./pages/UnionSettings";
 import UserManagementSettings from "./pages/UserManagementSettings";
 import OnboardingPage from "./pages/on-boarding/OnboardingPage";
+import PayrollPage from "./components/PayrollPage";
 
 const drawerWidth = 240;
 
@@ -99,6 +100,7 @@ const navigationItems = [
     ],
   },
   { label: "Onboarding", icon: <PeopleIcon />, path: "/onboarding" },
+  {label: "Payroll", icon: <PeopleIcon />, path: "/payroll-page" },
 ];
 
 const App = () => {
@@ -339,6 +341,8 @@ const App = () => {
           <Route path="/settings/unions" element={<UnionSettings />} />
           <Route path="/settings/users" element={<UserManagementSettings />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/payroll-page" element={<PayrollPage />} />
+          {/* Add more routes as needed */}
         </Routes>
       </Box>
     </Box>
