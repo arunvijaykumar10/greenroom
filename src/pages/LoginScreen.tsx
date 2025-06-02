@@ -193,7 +193,7 @@ const LoginScreen = () => {
                   color="primary"
                   size="large"
                   fullWidth
-                  onClick={() => handleSuccessfulLogin()}
+                  onClick={() => navigate("/dashboard")}
                 >
                   Sign in
                 </Button>
