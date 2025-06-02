@@ -15,6 +15,7 @@ import {
   Typography
 } from '@mui/material';
 import { EmployeePayee } from './payeeTypes';
+import { useNavigate } from 'react-router';
 
 type OnboardingStatus = 'onboarded' | 'pending' | 'not-started';
 
@@ -82,7 +83,8 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({
     return matchesSearch && matchesUnion && matchesJobTitle && matchesDepartment && 
       matchesOnboarding && matchesType;
   });
-
+  const navigate = useNavigate();
+ 
   const uniqueValues = (key: keyof EmployeePayee) => {
     const values = new Set(sampleEmployees.map(e => e[key]));
     return Array.from(values).filter(v => v !== undefined);
@@ -186,7 +188,9 @@ const EmployeeListView: React.FC<EmployeeListViewProps> = ({
       </Box>
       
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary"
+        onClick={()=> navigate ('/onboarding/employment')}
+        >
           Add New Employee
         </Button>
       </Box>

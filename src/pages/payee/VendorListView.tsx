@@ -14,6 +14,7 @@ import {
   Button,
   Typography
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 // Define OnboardingStatus type
 type OnboardingStatus = 'onboarded' | 'pending' | 'not-started';
@@ -100,7 +101,7 @@ const VendorListView: React.FC<VendorListViewProps> = ({
     return matchesSearch && matchesUnion && matchesJobTitle && matchesDepartment && 
       matchesOnboarding && matchesType;
   });
-
+  const navigate = useNavigate();
   const uniqueValues = (key: keyof VendorPayee) => {
     const values = new Set(sampleVendors.map(v => v[key]));
     // Only return string values for use as keys/children
@@ -212,7 +213,9 @@ const VendorListView: React.FC<VendorListViewProps> = ({
       </Box>
       
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary"
+        onClick={()=> navigate ('/onboarding/employment')}
+        >
           Add New Vendor
         </Button>
       </Box>
