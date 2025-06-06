@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Box, 
   Typography, 
   TextField, 
-  Button, 
-  Divider, 
   FormControlLabel, 
-  Checkbox,
-  Grid
+  Checkbox, 
+  Grid, 
+  Button,
+  Divider,
+  Paper
 } from '@mui/material';
 import { OnboardingFormData } from './types';
 
@@ -20,8 +21,6 @@ const EmployeeRepresentatives: React.FC<EmployeeRepresentativesProps> = ({
   formData, 
   onFormChange 
 }) => {
-  const [activeSubsection, setActiveSubsection] = useState<'agent' | 'manager'>('agent');
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     onFormChange({
@@ -29,85 +28,74 @@ const EmployeeRepresentatives: React.FC<EmployeeRepresentativesProps> = ({
     });
   };
 
+  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const numValue = value === '' ? undefined : Number(value);
+    onFormChange({ [name]: numValue });
+  };
+
   return (
     <Box>
-      <Typography variant="subtitle1" gutterBottom>
+      <Typography variant="h6" gutterBottom>
         Employee Representatives
       </Typography>
 
-      <Box sx={{ mb: 2 }}>
-        <Button 
-          variant={activeSubsection === 'agent' ? 'contained' : 'outlined'} 
-          onClick={() => setActiveSubsection('agent')}
-          sx={{ mr: 1 }}
-        >
-          Agent
-        </Button>
-        <Button 
-          variant={activeSubsection === 'manager' ? 'contained' : 'outlined'} 
-          onClick={() => setActiveSubsection('manager')}
-        >
-          Manager
-        </Button>
-      </Box>
+      {/* Agent Section */}
+      <Paper elevation={1} sx={{ p: 3, mb: 4, borderRadius: 2 }}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={formData.hasAgent || false}
+              onChange={handleChange}
+              name="hasAgent"
+            />
+          }
+          label="This worker has an Agent"
+        />
 
-      {activeSubsection === 'agent' && (
-        <Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="hasAgent"
-                checked={formData.hasAgent || false}
-                onChange={(e) => onFormChange({ 
-                  hasAgent: e.target.checked,
-                  agentAuthorization: e.target.checked ? formData.agentAuthorization : false
-                })}
-              />
-            }
-            label="This worker has an Agent"
-          />
+        {formData.hasAgent && (
+          <Box sx={{ mt: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Agent Email"
+                  name="agentEmail"
+                  type="email"
+                  value={formData.agentEmail || ''}
+                  onChange={handleChange}
+                  required
+                />
+              </Grid>
+              
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={formData.receivedAgentCheckAuth || false}
+                      onChange={handleChange}
+                      name="receivedAgentCheckAuth"
+                    />
+                  }
+                  label="I have received a Check Authorization form for this Agent"
+                />
+                <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                  Checking this box will remove the percentage fields and indicate that all wages will be paid directly to the agency (100%).
+                </Typography>
+              </Grid>
 
-          {formData.hasAgent && (
-            <>
-              <TextField
-                fullWidth
-                label="Agent Email"
-                name="agentEmail"
-                type="email"
-                value={formData.agentEmail || ''}
-                onChange={handleChange}
-                margin="normal"
-                required
-              />
-
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="agentAuthorization"
-                    checked={formData.agentAuthorization || false}
-                    onChange={(e) => onFormChange({ 
-                      agentAuthorization: e.target.checked,
-                      agentFeeRehearsal: e.target.checked ? 0 : formData.agentFeeRehearsal,
-                      agentFeePerformance: e.target.checked ? 0 : formData.agentFeePerformance
-                    })}
-                  />
-                }
-                label="I confirm that this agent is authorized to use Greenroom upon worker's behalf"
-              />
-
-              {!formData.agentAuthorization && (
-                <Grid container spacing={2} sx={{ mt: 1 }}>
+              {!formData.receivedAgentCheckAuth && (
+                <>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
                       label="Agent Fee (Rehearsal) %"
                       name="agentFeeRehearsal"
                       type="number"
-                      value={formData.agentFeeRehearsal || 0}
-                      onChange={(e) => onFormChange({ 
-                        agentFeeRehearsal: Math.min(Number(e.target.value), 100)
-                      })}
+                      value={formData.agentFeeRehearsal === undefined ? '' : formData.agentFeeRehearsal}
+                      onChange={handleNumberChange}
                       inputProps={{ min: 0, max: 100 }}
+                      required
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -116,120 +104,129 @@ const EmployeeRepresentatives: React.FC<EmployeeRepresentativesProps> = ({
                       label="Agent Fee (Performance) %"
                       name="agentFeePerformance"
                       type="number"
-                      value={formData.agentFeePerformance || 0}
-                      onChange={(e) => onFormChange({ 
-                        agentFeePerformance: Math.min(Number(e.target.value), 100)
-                      })}
+                      value={formData.agentFeePerformance === undefined ? '' : formData.agentFeePerformance}
+                      onChange={handleNumberChange}
                       inputProps={{ min: 0, max: 100 }}
+                      required
                     />
                   </Grid>
-                </Grid>
+                </>
               )}
 
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="body2">
-                  You can choose to onboard the agent now or invite them to complete their information.
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={formData.agentAuthorization || false}
+                      onChange={handleChange}
+                      name="agentAuthorization"
+                    />
+                  }
+                  label="I confirm that this agent is authorized to use Greenroom upon worker's behalf"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Divider sx={{ my: 2 }} />
+                <Typography variant="subtitle2" gutterBottom>
+                  Agent Onboarding Options
                 </Typography>
-                <Box sx={{ mt: 1 }}>
-                  <Button variant="outlined" sx={{ mr: 1 }}>
-                    Onboard Agent Manually
+                <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
+                  <Button variant="outlined" size="small">
+                    Continue Agent Onboarding Manually
                   </Button>
-                  <Button variant="outlined">
+                  <Button variant="contained" size="small">
                     Invite Agent to Self-Onboard
                   </Button>
                 </Box>
-              </Box>
-            </>
-          )}
-        </Box>
-      )}
+              </Grid>
+            </Grid>
+          </Box>
+        )}
+      </Paper>
 
-      {activeSubsection === 'manager' && (
-        <Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="hasManager"
-                checked={formData.hasManager || false}
-                onChange={(e) => onFormChange({ 
-                  hasManager: e.target.checked,
-                  managerAuthorization: e.target.checked ? formData.managerAuthorization : false
-                })}
-              />
-            }
-            label="This worker has a Manager"
-          />
+      {/* Manager Section */}
+      <Paper elevation={1} sx={{ p: 3, mb: 4, borderRadius: 2 }}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={formData.hasManager || false}
+              onChange={handleChange}
+              name="hasManager"
+            />
+          }
+          label="This worker has a Manager"
+        />
 
-          {formData.hasManager && (
-            <>
-              <TextField
-                fullWidth
-                label="Manager Email"
-                name="managerEmail"
-                type="email"
-                value={formData.managerEmail || ''}
-                onChange={handleChange}
-                margin="normal"
-                required
-              />
-
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="managerAuthorization"
-                    checked={formData.managerAuthorization || false}
-                    onChange={handleChange}
-                  />
-                }
-                label="I confirm that this manager is authorized to use Greenroom upon worker's behalf"
-              />
-
-              <Grid container spacing={2} sx={{ mt: 1 }}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Manager Fee (Rehearsal) %"
-                    name="managerFeeRehearsal"
-                    type="number"
-                    value={formData.managerFeeRehearsal || 0}
-                    onChange={(e) => onFormChange({ 
-                      managerFeeRehearsal: Math.min(Number(e.target.value), 100)
-                    })}
-                    inputProps={{ min: 0, max: 100 }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Manager Fee (Performance) %"
-                    name="managerFeePerformance"
-                    type="number"
-                    value={formData.managerFeePerformance || 0}
-                    onChange={(e) => onFormChange({ 
-                      managerFeePerformance: Math.min(Number(e.target.value), 100)
-                    })}
-                    inputProps={{ min: 0, max: 100 }}
-                  />
-                </Grid>
+        {formData.hasManager && (
+          <Box sx={{ mt: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Manager Email"
+                  name="managerEmail"
+                  type="email"
+                  value={formData.managerEmail || ''}
+                  onChange={handleChange}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Manager Fee (Rehearsal) %"
+                  name="managerFeeRehearsal"
+                  type="number"
+                  value={formData.managerFeeRehearsal === undefined ? '' : formData.managerFeeRehearsal}
+                  onChange={handleNumberChange}
+                  inputProps={{ min: 0, max: 100 }}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Manager Fee (Performance) %"
+                  name="managerFeePerformance"
+                  type="number"
+                  value={formData.managerFeePerformance === undefined ? '' : formData.managerFeePerformance}
+                  onChange={handleNumberChange}
+                  inputProps={{ min: 0, max: 100 }}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={formData.managerAuthorization || false}
+                      onChange={handleChange}
+                      name="managerAuthorization"
+                    />
+                  }
+                  label="I confirm that this manager is authorized to use Greenroom upon worker's behalf"
+                />
               </Grid>
 
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="body2">
-                  You can choose to onboard the manager now or invite them to complete their information.
+              <Grid item xs={12}>
+                <Divider sx={{ my: 2 }} />
+                <Typography variant="subtitle2" gutterBottom>
+                  Manager Onboarding Options
                 </Typography>
-                <Box sx={{ mt: 1 }}>
-                  <Button variant="outlined" sx={{ mr: 1 }}>
-                    Onboard Manager Manually
+                <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
+                  <Button variant="outlined" size="small">
+                    Continue Manager Onboarding Manually
                   </Button>
-                  <Button variant="outlined">
+                  <Button variant="contained" size="small">
                     Invite Manager to Self-Onboard
                   </Button>
                 </Box>
-              </Box>
-            </>
-          )}
-        </Box>
-      )}
+              </Grid>
+            </Grid>
+          </Box>
+        )}
+      </Paper>
     </Box>
   );
 };

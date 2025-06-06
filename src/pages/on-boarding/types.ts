@@ -34,11 +34,15 @@ export interface OnboardingFormData {
   agentFeeRehearsal?: number;
   agentFeePerformance?: number;
   agentAuthorization?: boolean;
+  receivedAgentCheckAuth?: boolean;
   hasManager?: boolean;
   managerEmail?: string;
   managerFeeRehearsal?: number;
   managerFeePerformance?: number;
   managerAuthorization?: boolean;
+  // Child Trust
+  hasChildTrust?: boolean;
+  childTrustPercentage?: number;
   // Work Authorization
   phoneNumber?: string;
   legalStatus?: string;
@@ -65,12 +69,31 @@ export interface OnboardingFormData {
   stateWithholdingCode?: string;
   stateAdditionalWithholding?: number;
   stateReducedWithholding?: number;
+  stateAllowances?: number;
   // Payment
   paymentMethod?: string;
   routingNumber?: string;
   accountNumber?: string;
   accountType?: string;
   mailingAddress?: Address;
+  // Agent Payment
+  agentPaymentMethod?: string;
+  agentRoutingNumber?: string;
+  agentAccountNumber?: string;
+  agentAccountType?: string;
+  agentMailingAddress?: Address;
+  // Manager Payment
+  managerPaymentMethod?: string;
+  managerRoutingNumber?: string;
+  managerAccountNumber?: string;
+  managerAccountType?: string;
+  managerMailingAddress?: Address;
+  // Child Trust Payment
+  childTrustPaymentMethod?: string;
+  childTrustRoutingNumber?: string;
+  childTrustAccountNumber?: string;
+  childTrustAccountType?: string;
+  childTrustMailingAddress?: Address;
   // Vendor specific
   federalTaxClassification?: string;
   exemptPayeeCode?: string;
@@ -80,6 +103,11 @@ export interface OnboardingFormData {
   i9Completed?: boolean;
   w9Completed?: boolean;
   otherDocuments?: string[];
+  // Self-onboarding
+  invitationSent?: boolean;
+  invitationEmail?: string;
+  invitationMessage?: string;
+  adminAcknowledgement?: boolean;
 }
 
 interface Address {

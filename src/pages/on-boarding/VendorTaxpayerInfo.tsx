@@ -1,13 +1,5 @@
 import React from 'react';
-import { 
-  Box, 
-  Typography, 
-  TextField, 
-  MenuItem, 
-  Button,
-  Grid
-} from '@mui/material';
-import AddressForm from '../AddressForm';
+import { Box, Typography, TextField, MenuItem, Grid, FormHelperText } from '@mui/material';
 import { OnboardingFormData } from './types';
 
 interface VendorTaxpayerInfoProps {
@@ -28,37 +20,26 @@ const VendorTaxpayerInfo: React.FC<VendorTaxpayerInfoProps> = ({
     onFormChange({ [name]: value });
   };
 
-  const handleAddressChange = (address: any) => {
-    onFormChange({ businessAddress: address });
-  };
-
-  const federalTaxClassifications = [
-    'Individual/sole proprietor',
-    'C corporation',
-    'S corporation',
-    'Partnership',
-    'Trust/estate',
-    'LLC (C corporation)',
-    'LLC (S corporation)',
-    'LLC (Partnership)',
-    'Other'
-  ];
-
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
         Taxpayer Information (W-9)
       </Typography>
 
-      <Grid container spacing={2} sx={{ mt: 1 }}>
+      <Typography variant="body1" paragraph>
+        This information is required for tax reporting purposes.
+      </Typography>
+
+      <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label={formData.payeeType === 'Vendor/Contractor' ? 'Business Name' : 'Entity Name'}
+            label={formData.payeeType === 'Vendor/Contractor' && formData.entityName ? 'Entity Name' : 'Name'}
             name="entityName"
-            value={formData.entityName || ''}
+            value={formData.entityName || formData.legalFirstName + ' ' + formData.legalLastName || ''}
             onChange={handleChange}
             required
+            disabled={!!formData.legalFirstName && !!formData.legalLastName}
           />
         </Grid>
 
@@ -72,11 +53,15 @@ const VendorTaxpayerInfo: React.FC<VendorTaxpayerInfoProps> = ({
             onChange={handleChange}
             required
           >
-            {federalTaxClassifications.map((classification) => (
-              <MenuItem key={classification} value={classification}>
-                {classification}
-              </MenuItem>
-            ))}
+            <MenuItem value="individual">Individual/sole proprietor</MenuItem>
+            <MenuItem value="c-corporation">C Corporation</MenuItem>
+            <MenuItem value="s-corporation">S Corporation</MenuItem>
+            <MenuItem value="partnership">Partnership</MenuItem>
+            <MenuItem value="trust-estate">Trust/estate</MenuItem>
+            <MenuItem value="llc-c">LLC - C Corporation</MenuItem>
+            <MenuItem value="llc-s">LLC - S Corporation</MenuItem>
+            <MenuItem value="llc-p">LLC - Partnership</MenuItem>
+            <MenuItem value="other">Other</MenuItem>
           </TextField>
         </Grid>
 
@@ -88,25 +73,42 @@ const VendorTaxpayerInfo: React.FC<VendorTaxpayerInfoProps> = ({
             value={formData.exemptPayeeCode || ''}
             onChange={handleChange}
           />
+          <FormHelperText>
+            Exemption codes apply only to certain entities, not individuals
+          </FormHelperText>
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <TextField
             fullWidth
-            label="FATCA Exemption Code (if any)"
+            label="Exemption from FATCA Reporting Code (if any)"
             name="fatcaExemptionCode"
             value={formData.fatcaExemptionCode || ''}
             onChange={handleChange}
           />
+          <FormHelperText>
+            Applies to accounts maintained outside the U.S.
+          </FormHelperText>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>
+          <Typography variant="subtitle1" gutterBottom>
             Business Address
           </Typography>
-          <AddressForm 
-            address={formData.businessAddress} 
-            onChange={handleAddressChange} 
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Street Address"
+            name="businessAddress.address1"
+            value={formData.businessAddress?.address1 || ''}
+            onChange={(e) => onFormChange({
+              businessAddress: {
+                ...formData.businessAddress,
+                address1: e.target.value
+              }
+            })}
             required
           />
         </Grid>
@@ -114,25 +116,83 @@ const VendorTaxpayerInfo: React.FC<VendorTaxpayerInfoProps> = ({
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label={formData.payeeType === 'Vendor/Contractor' ? 'EIN or SSN' : 'EIN'}
-            name="ein"
-            value={formData.ein || ''}
-            onChange={handleChange}
+            label="Apt or Suite No."
+            name="businessAddress.address2"
+            value={formData.businessAddress?.address2 || ''}
+            onChange={(e) => onFormChange({
+              businessAddress: {
+                ...formData.businessAddress,
+                address2: e.target.value
+              }
+            })}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            label="City"
+            name="businessAddress.city"
+            value={formData.businessAddress?.city || ''}
+            onChange={(e) => onFormChange({
+              businessAddress: {
+                ...formData.businessAddress,
+                city: e.target.value
+              }
+            })}
             required
           />
         </Grid>
-      </Grid>
 
-      {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-        <Button onClick={onBack}>Back</Button>
-        <Button 
-          variant="contained" 
-          onClick={onNext}
-          disabled={!formData.entityName || !formData.federalTaxClassification || !formData.ein}
-        >
-          Continue
-        </Button>
-      </Box> */}
+        <Grid item xs={12} sm={3}>
+          <TextField
+            fullWidth
+            label="State"
+            name="businessAddress.state"
+            value={formData.businessAddress?.state || ''}
+            onChange={(e) => onFormChange({
+              businessAddress: {
+                ...formData.businessAddress,
+                state: e.target.value
+              }
+            })}
+            required
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={3}>
+          <TextField
+            fullWidth
+            label="ZIP Code"
+            name="businessAddress.zipCode"
+            value={formData.businessAddress?.zipCode || ''}
+            onChange={(e) => onFormChange({
+              businessAddress: {
+                ...formData.businessAddress,
+                zipCode: e.target.value
+              }
+            })}
+            required
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label={formData.payeeType === 'Vendor/Contractor' && formData.entityName ? 'EIN' : 'SSN or EIN'}
+            name={formData.payeeType === 'Vendor/Contractor' && formData.entityName ? 'ein' : 'ssn'}
+            value={formData.ein || formData.ssn || ''}
+            onChange={handleChange}
+            placeholder={formData.payeeType === 'Vendor/Contractor' && formData.entityName ? '12-3456789' : '123-45-6789 or 12-3456789'}
+            required
+          />
+          <FormHelperText>
+            {formData.payeeType === 'Vendor/Contractor' && formData.entityName 
+              ? 'Enter your Employer Identification Number' 
+              : 'Enter your Social Security Number or Employer Identification Number'}
+          </FormHelperText>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
