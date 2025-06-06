@@ -350,12 +350,7 @@ const App = () => {
           <Route path="/union_reports" element={<UnionReports />} />
           <Route path="/tax_reports" element={<TaxReports />} />
           <Route path="/pay_stubs" element={<PaystubReports />} />
-          <Route path="/settings/company" element={<CompanySettings companies={{
-            active: [],
-            inactive: []
-          }} onReactivateCompany={function (): void {
-            throw new Error("Function not implemented.");
-          } } />} />
+          <Route path="/settings/company" element={<CompanySettings/>} />
           <Route path="/settings/unions" element={<UnionSettings />} />
           <Route path="/settings/users" element={<UserManagementSettings />} />
           <Route path="/onboarding/employment" element={<OnboardingPage />} />
