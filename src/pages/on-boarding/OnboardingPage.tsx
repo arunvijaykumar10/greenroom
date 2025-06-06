@@ -22,6 +22,7 @@ import RequiredStartWork from "./RequiredStartWork";
 import { OnboardingFormData, PayeeType } from "./types";
 import VendorTaxpayerInfo from "./VendorTaxpayerInfo";
 import WorkAuthorization from "./WorkAuthorization";
+import { useLocation } from "react-router";
 
 const OnboardingPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -33,6 +34,10 @@ const OnboardingPage: React.FC = () => {
   // Always use manual onboarding for Employee type
   const isManual =
     formData.payeeType === "Employee" ? true : isManualOnboarding;
+
+  const location = useLocation();
+
+  const isDashboard = location.pathname.includes("dashboard");
 
   const handleNext = () => {
     const nextStep = activeStep + 1;
@@ -252,8 +257,15 @@ const OnboardingPage: React.FC = () => {
   }
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "#f5faff", py: 6, px: 0 }}>
+    <Box sx={{ minHeight: "100vh", py: 6, px: 0 }}>
       <Container maxWidth={false} disableGutters sx={{ px: { xs: 0, sm: 4 } }}>
+        {isDashboard && (
+          <Typography
+            sx={{ color: "red", fontWeight: 600, mb: 2, fontSize: 18 }}
+          >
+            * Add at least one payee
+          </Typography>
+        )}
         <Paper
           elevation={6}
           sx={{
