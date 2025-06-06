@@ -7,6 +7,7 @@ import {
   MenuItem,
   Select,
   Paper,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import EmployeeGeneralInfo from "./EmployeeGneralInfo";
@@ -294,40 +295,47 @@ const OnboardingPage: React.FC = () => {
                 <MenuItem value="Vendor/Contractor">Vendor/Contractor</MenuItem>
               </Select>
             </FormControl>
-            {formData.payeeType !== "Employee" && (
-              <Box>
-                <Button
-                  variant={isManualOnboarding ? "contained" : "outlined"}
-                  onClick={() => handleOnboardingMethodChange(true)}
-                  sx={{
-                    mr: 1,
-                    borderRadius: 2,
-                    minWidth: 150,
-                    boxShadow: isManualOnboarding ? 2 : 0,
-                  }}
-                >
-                  Manual Onboarding
-                </Button>
-                <Button
-                  variant={!isManualOnboarding ? "contained" : "outlined"}
-                  onClick={() => handleOnboardingMethodChange(false)}
-                  sx={{
-                    borderRadius: 2,
-                    minWidth: 150,
-                    boxShadow: !isManualOnboarding ? 2 : 0,
-                  }}
-                >
-                  Self-Onboarding
-                </Button>
-              </Box>
-            )}
+            <Box>
+              <Button
+                variant={isManualOnboarding ? "contained" : "outlined"}
+                onClick={() => handleOnboardingMethodChange(true)}
+                sx={{
+                  mr: 1,
+                  borderRadius: 2,
+                  minWidth: 150,
+                  boxShadow: isManualOnboarding ? 2 : 0,
+                }}
+              >
+                Manual Onboarding
+              </Button>
+              <Button
+                variant={!isManualOnboarding ? "contained" : "outlined"}
+                onClick={() => handleOnboardingMethodChange(false)}
+                sx={{
+                  borderRadius: 2,
+                  minWidth: 150,
+                  boxShadow: !isManualOnboarding ? 2 : 0,
+                }}
+                disabled={formData.payeeType === "Employee"}
+              >
+                Self-Onboarding
+              </Button>
+              {formData.payeeType === "Employee" && (
+                <Typography variant="caption" color="text.secondary" sx={{ ml: 1, display: "block", mt: 1 }}>
+                  Employee requires manual onboarding
+                </Typography>
+              )}
+            </Box>
           </Box>
           <OnboardingStepper
             activeStep={activeStep}
             payeeType={formData.payeeType}
             isManualOnboarding={isManual}
           />
-          <Box sx={{ mt: 3 }}>{getStepContent(activeStep)}</Box>
+          
+          <Box sx={{ mt: 3 }}>
+            {getStepContent(activeStep)}
+          </Box>
           <Box
             sx={{
               display: "flex",
