@@ -68,10 +68,17 @@ import PayeesPage from "./pages/payee/PayeesPage";
 import { PersonAdd } from "@mui/icons-material";
 import RegisterPage from "./pages/register/RegisterPage";
 import AdminOnboarding from "./pages/on-boarding/AdminOnboarding";
+import CompanyPage from "./pages/company/CompanyPage";
+import { CompanyInfo } from "./components/companyTypes";
 
 const drawerWidth = 240;
 
 const navigationItems = [
+  {
+    label: "Company",
+    icon: <AccountBalanceIcon />,
+    path: "/company",
+  },
   {
     label: "Dashboard",
     icon: <DashboardIcon />,
@@ -343,7 +350,12 @@ const App = () => {
           <Route path="/union_reports" element={<UnionReports />} />
           <Route path="/tax_reports" element={<TaxReports />} />
           <Route path="/pay_stubs" element={<PaystubReports />} />
-          <Route path="/settings/company" element={<CompanySettings />} />
+          <Route path="/settings/company" element={<CompanySettings companies={{
+            active: [],
+            inactive: []
+          }} onReactivateCompany={function (): void {
+            throw new Error("Function not implemented.");
+          } } />} />
           <Route path="/settings/unions" element={<UnionSettings />} />
           <Route path="/settings/users" element={<UserManagementSettings />} />
           <Route path="/onboarding/employment" element={<OnboardingPage />} />
@@ -360,6 +372,7 @@ const App = () => {
             path="/reports/check-register/:payrollId"
             element={<CheckDetails />}
           />
+          <Route path="/company" element={<CompanyPage/>} />
         </Routes>
       </Box>
     </Box>
