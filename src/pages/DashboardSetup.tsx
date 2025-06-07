@@ -8,6 +8,7 @@ import {
   Typography,
   Paper,
   Button,
+  Stack,
 } from "@mui/material";
 import CompanyInformationForm from "./setup/CompanyInformationForm";
 import { UnionConfigurationForm } from "./setup/UnionConfigurationForm";
@@ -71,10 +72,6 @@ const DashboardSetupStepper: React.FC = () => {
     setStatus("completed");
   };
 
-  const StepComponent = steps[activeStep].skip
-    ? React.cloneElement(steps[activeStep].component, { onSkip: handleNext })
-    : steps[activeStep].component;
-
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       {status === "ongoing" ? (
@@ -109,29 +106,81 @@ const DashboardSetupStepper: React.FC = () => {
             })}
           </Stepper>
 
-          <Box sx={{ mt: 4 }}>{StepComponent}</Box>
+          <Box sx={{ mt: 4 }}>{steps[activeStep].component}</Box>
 
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
-            <Button disabled={activeStep === 0} onClick={handleBack}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mt: 4,
+              py: 2,
+              px: 3,
+              borderTop: "1px solid",
+              borderColor: "divider",
+              backgroundColor: "background.paper",
+              borderRadius: 2,
+            }}
+          >
+            {/* Back Button */}
+            <Button
+              variant="outlined"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ minWidth: 100 }}
+            >
               Back
             </Button>
-            {activeStep === steps.length - 1 ? (
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleFinish}
-              >
-                Finish
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                onClick={handleNext}
-                disabled={activeStep === steps.length - 1}
-              >
-                Next
-              </Button>
-            )}
+
+            {/* Action Buttons */}
+            <Stack direction="row" spacing={2} alignItems="center">
+              {steps[activeStep].skip && (
+                <Button variant="outlined" color="secondary" onClick={handleNext}>
+                  Skip for now
+                </Button>
+              )}
+
+              {steps[activeStep].label === "Send to review" && (
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1}
+                  sx={{
+                    px: 2,
+                    py: 1,
+                    backgroundColor: "grey.100",
+                    borderRadius: 2,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Send Details to Greenroom Review
+                  </Typography>
+                  <Button variant="contained" color="primary">
+                    Send
+                  </Button>
+                </Stack>
+              )}
+
+              {activeStep === steps.length - 1 ? (
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleFinish}
+                  sx={{ minWidth: 100 }}
+                >
+                  Finish
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  onClick={handleNext}
+                  disabled={activeStep === steps.length - 1}
+                  sx={{ minWidth: 100 }}
+                >
+                  Next
+                </Button>
+              )}
+            </Stack>
           </Box>
         </Paper>
       ) : (

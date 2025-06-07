@@ -7,7 +7,6 @@ import {
   MenuItem,
   Select,
   Paper,
-  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import EmployeeGeneralInfo from "./EmployeeGneralInfo";
@@ -22,7 +21,6 @@ import RequiredStartWork from "./RequiredStartWork";
 import { OnboardingFormData, PayeeType } from "./types";
 import VendorTaxpayerInfo from "./VendorTaxpayerInfo";
 import WorkAuthorization from "./WorkAuthorization";
-import { useLocation } from "react-router";
 
 const OnboardingPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -30,15 +28,10 @@ const OnboardingPage: React.FC = () => {
     payeeType: "Employee",
   });
   const [isComplete, setIsComplete] = useState(false);
-  const [isManualOnboarding, setIsManualOnboarding] = useState(true);
+  const [isManualOnboarding, _setIsManualOnboarding] = useState(true);
   // Always use manual onboarding for Employee type
   const isManual =
     formData.payeeType === "Employee" ? true : isManualOnboarding;
-
-  const location = useLocation();
-
-  const isDashboard = location.pathname.includes("dashboard");
-
   const handleNext = () => {
     const nextStep = activeStep + 1;
 
@@ -92,19 +85,6 @@ const OnboardingPage: React.FC = () => {
         newPayeeType !== "Employee" ? prev.businessAddress : undefined,
     }));
     setActiveStep(0);
-  };
-
-  const handleOnboardingMethodChange = (isManual: boolean) => {
-    // Don't allow self-onboarding for Employee type
-    if (formData.payeeType === "Employee" && !isManual) {
-      return;
-    }
-
-    setIsManualOnboarding(isManual);
-    if (!isManual) {
-      // If switching to self-onboarding, we'll only need the first step
-      setActiveStep(0);
-    }
   };
 
   const getStepContent = (step: number) => {
@@ -259,13 +239,6 @@ const OnboardingPage: React.FC = () => {
   return (
     <Box sx={{ minHeight: "100vh", py: 6, px: 0 }}>
       <Container maxWidth={false} disableGutters sx={{ px: { xs: 0, sm: 4 } }}>
-        {isDashboard && (
-          <Typography
-            sx={{ color: "red", fontWeight: 600, mb: 2, fontSize: 18 }}
-          >
-            * Add at least one payee
-          </Typography>
-        )}
         <Paper
           elevation={6}
           sx={{
@@ -307,47 +280,14 @@ const OnboardingPage: React.FC = () => {
                 <MenuItem value="Vendor/Contractor">Vendor/Contractor</MenuItem>
               </Select>
             </FormControl>
-            <Box>
-              <Button
-                variant={isManualOnboarding ? "contained" : "outlined"}
-                onClick={() => handleOnboardingMethodChange(true)}
-                sx={{
-                  mr: 1,
-                  borderRadius: 2,
-                  minWidth: 150,
-                  boxShadow: isManualOnboarding ? 2 : 0,
-                }}
-              >
-                Manual Onboarding
-              </Button>
-              <Button
-                variant={!isManualOnboarding ? "contained" : "outlined"}
-                onClick={() => handleOnboardingMethodChange(false)}
-                sx={{
-                  borderRadius: 2,
-                  minWidth: 150,
-                  boxShadow: !isManualOnboarding ? 2 : 0,
-                }}
-                disabled={formData.payeeType === "Employee"}
-              >
-                Self-Onboarding
-              </Button>
-              {formData.payeeType === "Employee" && (
-                <Typography variant="caption" color="text.secondary" sx={{ ml: 1, display: "block", mt: 1 }}>
-                  Employee requires manual onboarding
-                </Typography>
-              )}
-            </Box>
           </Box>
           <OnboardingStepper
             activeStep={activeStep}
             payeeType={formData.payeeType}
             isManualOnboarding={isManual}
           />
-          
-          <Box sx={{ mt: 3 }}>
-            {getStepContent(activeStep)}
-          </Box>
+
+          <Box sx={{ mt: 3 }}>{getStepContent(activeStep)}</Box>
           <Box
             sx={{
               display: "flex",

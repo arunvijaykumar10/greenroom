@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 const REGISTRATION_STEPS = [
   "Company Information",
-  "User Details",
+  "Administrator Details",
   "Payroll Details",
 ];
 
@@ -89,7 +89,6 @@ export default function RegisterPage() {
         }}
       >
         <CardContent>
-          (
           <Stack spacing={4}>
             <Typography
               variant="h4"
@@ -129,7 +128,6 @@ export default function RegisterPage() {
               />
             </Box>
           </Stack>
-          )
         </CardContent>
       </Card>
     </Box>

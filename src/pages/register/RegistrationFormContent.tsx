@@ -4,7 +4,7 @@ const entityTypes = ["LLC", "Corporation", "Sole Proprietor", "Partnership"];
 const states = ["NY", "CA", "TX", "FL"];
 const payFrequencies = ["Weekly", "Bi-Weekly", "Monthly"];
 const payPeriods = ["Current", "Previous", "Next"];
-const roles = ["Owner", "Manager", "Employee"];
+const roles = ["Actor", "Star", "Principle Actor", "Chorus/Sing"];
 
 interface Props {
   activeStep: number;

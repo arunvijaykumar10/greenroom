@@ -29,7 +29,6 @@ const renderField = (label: string, value?: string | boolean) => (
 );
 
 const SendToReview: React.FC = () => {
-
   return (
     <Card sx={{ maxWidth: 900, margin: "auto", p: 2 }}>
       <CardHeader title="Setup Summary" />
@@ -127,17 +126,6 @@ const SendToReview: React.FC = () => {
           {renderField("Check Number", mockPayrollSetup.checkNumber)}
         </Grid>
       </CardContent>
-
-      <Stack
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        spacing={2}
-        sx={{ px: 2, pb: 2 }}
-      >
-        <Typography sx={{ mr: 2 }}>Send Details to Greenroom Review</Typography>
-        <Button variant="contained">Send</Button>
-      </Stack>
     </Card>
   );
 };

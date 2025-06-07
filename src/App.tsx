@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,22 +21,20 @@ import {
   CssBaseline,
   Avatar,
   Stack,
-  SelectChangeEvent,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   Collapse,
+  SelectChangeEvent,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
-
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Bell, DollarSign, SettingsIcon } from "lucide-react";
-// import { ReviewsOutlined } from "@mui/icons-material";
 
 // Pages
 import DashboardSetup from "./pages/DashboardSetup";
@@ -65,35 +63,35 @@ import UnionReports from "./pages/reports/UnionReports";
 import TaxReports from "./pages/reports/TaxReports";
 import CheckDetails from "./pages/reports/CheckDetails";
 import PayeesPage from "./pages/payee/PayeesPage";
-import { PersonAdd } from "@mui/icons-material";
 import RegisterPage from "./pages/register/RegisterPage";
-import AdminOnboarding from "./pages/on-boarding/AdminOnboarding";
-import CompanyPage from "./pages/company/CompanyPage";
-import { CompanyInfo } from "./components/companyTypes";
+import Settings from "./pages/Settings";
+import CompaniesPage from "./pages/company/CompaniesPage";
+import { CompanyProvider, useCompany } from "./contexts/CompanyContext";
+
+type NavigationItem =
+  | {
+      label: string;
+      icon: React.ReactNode;
+      path: string;
+      children?: undefined;
+    }
+  | {
+      label: string;
+      icon: React.ReactNode;
+      children: {
+        label: string;
+        path: string;
+      }[];
+      path?: undefined;
+    };
 
 const drawerWidth = 240;
 
-const navigationItems = [
-  {
-    label: "Company",
-    icon: <AccountBalanceIcon />,
-    path: "/company",
-  },
-  {
-    label: "Dashboard",
-    icon: <DashboardIcon />,
-    path: "/dashboard",
-  },
-  {
-    label: "Onboarding",
-    icon: <PersonAdd />,
-    children: [
-      { label: "Employee", path: "/onboarding/employment" },
-      // { label: "Admin", path: "/onboarding/admin" },
-    ],
-  },
+const adminNavItems: NavigationItem[] = [
+  { label: "Company", icon: <AccountBalanceIcon />, path: "/company" },
+  { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
   { label: "Payees", icon: <PeopleIcon />, path: "/payees" },
-  { label: "Payroll", icon: <DollarSign/>, path: "/payroll-page" },
+  { label: "Payroll", icon: <DollarSign />, path: "/payroll-page" },
   { label: "Taxes", icon: <AccountBalanceIcon />, path: "/taxes" },
   {
     label: "Reports",
@@ -118,6 +116,12 @@ const navigationItems = [
   },
 ];
 
+const employeeNavItems: NavigationItem[] = [
+  { label: "Company", icon: <AccountBalanceIcon />, path: "/company" },
+  { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
+  { label: "Settings", icon: <SettingsIcon />, path: "/settings" },
+];
+
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -125,26 +129,28 @@ const App = () => {
   const showDrawer =
     currentPathname !== "/login" && currentPathname !== "/register";
 
+  const {
+    companies: userCompanyData,
+    selectedCompany,
+    setSelectedCompany,
+    currentRole,
+  } = useCompany();
+
+  const companies = userCompanyData
+    .filter((company) => company.isActive)
+    .map((c) => c.company);
+
+  console.log("companies", userCompanyData);
+
+  const appNavItems = useMemo(
+    () => (currentRole === "Admin" ? adminNavItems : employeeNavItems),
+    [currentRole]
+  );
   const [selectedTab, setSelectedTab] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
 
-  const companies = [
-    "TechNova Inc.",
-    "BrightPath LLC",
-    "GreenHarvest Co.",
-    "UrbanEdge Designs",
-    "GlobalTech Solutions",
-    "NextGen Innovations",
-    "EcoWave Enterprises",
-  ];
-  const [selectedCompany, setSelectedCompany] = useState(companies[0]);
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedCompany(event.target.value);
-  };
-
   useEffect(() => {
-    const match = navigationItems.find((item) =>
+    const match = appNavItems.find((item) =>
       item.children
         ? item.children.some((child) => child.path === currentPathname)
         : item.path === currentPathname
@@ -159,19 +165,26 @@ const App = () => {
     } else {
       setSelectedTab(match?.label ?? null);
     }
-  }, [currentPathname]);
+  }, [currentPathname, appNavItems]);
 
   const toggleSection = (label: string) => {
     setOpenSections((prev) => {
-      const isCurrentlyOpen = !!prev[label];
+      const isOpen = !!prev[label];
       const newState: Record<string, boolean> = {};
-      if (!isCurrentlyOpen) newState[label] = true;
+      if (!isOpen) newState[label] = true;
       return newState;
     });
   };
 
   const handleNavigation = (path: string) => {
     navigate(path);
+  };
+
+  const handleChange = (event: SelectChangeEvent) => {
+    const newCompany = event.target.value;
+    setSelectedCompany(newCompany);
+
+    navigate("/company");
   };
 
   return (
@@ -184,23 +197,32 @@ const App = () => {
           sx={{
             zIndex: (theme) => theme.zIndex.drawer + 1,
             backgroundColor: "#fff",
-            color: "#000",
+            color: "text.primary",
             boxShadow: "none",
             borderBottom: "1px solid #e0e0e0",
           }}
         >
-          <Toolbar sx={{ justifyContent: "space-between", gap: 3, p: 1 }}>
-            <Typography variant="h6" noWrap fontWeight="bold">
+          <Toolbar
+            sx={{
+              gap: 3,
+              px: 3,
+              py: 1.5,
+            }}
+          >
+            {/* Brand */}
+            <Typography variant="h6" fontWeight="bold" color="primary.main">
               Green Room Payroll
             </Typography>
 
-            <Box sx={{ flexGrow: 1 }}>
-              <FormControl sx={{ width: 250 }}>
+            {/* Company Select & Role */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+              <FormControl size="small" sx={{ minWidth: 220 }}>
                 <InputLabel id="company-select-label">Company</InputLabel>
                 <Select
                   labelId="company-select-label"
                   id="company-select"
                   value={selectedCompany}
+                  name="company"
                   label="Company"
                   onChange={handleChange}
                 >
@@ -211,19 +233,47 @@ const App = () => {
                   ))}
                 </Select>
               </FormControl>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "text.secondary",
+                  whiteSpace: "nowrap",
+                  fontStyle: "italic",
+                  fontWeight: 600,
+                }}
+              >
+                Role: {currentRole}
+              </Typography>
             </Box>
 
-            <Stack direction="row" alignItems="center">
-              <IconButton>
-                <Bell />
+            {/* Push next section to right */}
+            <Box sx={{ flexGrow: 1 }} />
+
+            {/* Notification and User Info */}
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <IconButton color="inherit">
+                <Bell size={20} />
               </IconButton>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Avatar sx={{ bgcolor: "primary.main", width: 32, height: 32 }}>
+
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Avatar
+                  sx={{
+                    bgcolor: "primary.main",
+                    width: 36,
+                    height: 36,
+                    fontSize: 14,
+                  }}
+                >
                   JS
                 </Avatar>
-                <Typography variant="body2" fontWeight="medium">
-                  Jane Smith
-                </Typography>
+                <Box>
+                  <Typography variant="body2" fontWeight={600}>
+                    Jane Smith
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {currentRole}
+                  </Typography>
+                </Box>
               </Stack>
             </Stack>
           </Toolbar>
@@ -247,7 +297,7 @@ const App = () => {
         >
           <Toolbar />
           <List>
-            {navigationItems.map((item) => {
+            {appNavItems.map((item) => {
               const hasChildren = Boolean(item.children?.length);
               const isOpen = openSections[item.label] || false;
 
@@ -276,9 +326,9 @@ const App = () => {
                             ? "#1976d2"
                             : "inherit",
                         minWidth: 0,
-                        marginRight: 2, // space between icon and text
+                        marginRight: 2,
                       },
-                      pl: 2, // parent padding left
+                      pl: 2,
                     }}
                   >
                     <ListItemIcon>{item.icon}</ListItemIcon>
@@ -300,10 +350,7 @@ const App = () => {
                                   ? "#e3f2fd"
                                   : "inherit",
                                 color: isSelected ? "#1976d2" : "inherit",
-                                "& .MuiListItemIcon-root": {
-                                  color: isSelected ? "#1976d2" : "inherit",
-                                },
-                                pl: 8, // child label more indented than parent
+                                pl: 8,
                               }}
                             >
                               <ListItemText primary={child.label} />
@@ -334,7 +381,12 @@ const App = () => {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/dashboard" element={<DashboardSetup />} />
+          <Route
+            path="/dashboard"
+            element={
+              currentRole === "Admin" ? <DashboardSetup /> : <OnboardingPage />
+            }
+          />
           <Route path="/payees" element={<PayeesPage />} />
           <Route path="/timesheets" element={<AdminTimesheetEntry />} />
           <Route path="/taxes" element={<TaxCalculator />} />
@@ -350,24 +402,23 @@ const App = () => {
           <Route path="/union_reports" element={<UnionReports />} />
           <Route path="/tax_reports" element={<TaxReports />} />
           <Route path="/pay_stubs" element={<PaystubReports />} />
-          <Route path="/settings/company" element={<CompanySettings/>} />
+          <Route path="/settings/company" element={<CompanySettings />} />
           <Route path="/settings/unions" element={<UnionSettings />} />
           <Route path="/settings/users" element={<UserManagementSettings />} />
-          <Route path="/onboarding/employment" element={<OnboardingPage />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/payroll-page" element={<PayrollPage />} />
-          {/* Add more routes as needed */}
           <Route
             path="/settings/onboarding-documents"
             element={<OnboardingDocuments />}
           />
-          <Route path="/onboarding/admin" element={<AdminOnboarding />} />
           <Route path="/settings/payroll-setup" element={<PayrollSetup />} />
           <Route path="/settings/tax-setup" element={<TaxSetup />} />
           <Route
             path="/reports/check-register/:payrollId"
             element={<CheckDetails />}
           />
-          <Route path="/company" element={<CompanyPage/>} />
+          <Route path="/company" element={<CompaniesPage />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Box>
     </Box>
@@ -376,7 +427,9 @@ const App = () => {
 
 const RootApp: React.FC = () => (
   <Router>
-    <App />
+    <CompanyProvider>
+      <App />
+    </CompanyProvider>
   </Router>
 );
 

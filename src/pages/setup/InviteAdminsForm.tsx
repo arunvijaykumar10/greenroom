@@ -8,15 +8,15 @@ import {
   IconButton,
   Box,
   Alert,
+  Grid,
+  Divider,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const InviteAdminsForm = ({
   entityType = "Corporation",
-  onSkip,
 }: {
   entityType?: string;
-  onSkip?: () => void;
 }) => {
   const [admins, setAdmins] = useState([
     { firstName: "", lastName: "", email: "", role: "" },
@@ -42,60 +42,93 @@ const InviteAdminsForm = ({
   };
 
   return (
-    <Paper sx={{ p: 4, maxWidth: 700, mx: "auto" }}>
+    <Paper
+      sx={{
+        p: 4,
+        maxWidth: 900,
+        mx: "auto",
+        borderRadius: 3,
+        backgroundColor: "background.default",
+      }}
+      elevation={3}
+    >
       <Typography variant="h6" gutterBottom>
         Invite Additional Admins
       </Typography>
 
       {!isSingleMemberLLC && (
-        <Alert severity="info" sx={{ mb: 2 }}>
+        <Alert severity="info" sx={{ mb: 3 }}>
           We strongly recommend adding additional admins for this production.
           You may invite up to 10 admins. Each admin will be required to
           complete registration and MFA.
         </Alert>
       )}
 
-      <Stack spacing={3}>
+      <Stack spacing={4}>
         {admins.map((admin, idx) => (
-          <Box key={idx} sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-            <TextField
-              label="First Name *"
-              name="firstName"
-              value={admin.firstName}
-              onChange={(e) => handleChange(idx, "firstName", e.target.value)}
-              required
-              fullWidth
-              size="small"
-            />
-            <TextField
-              label="Last Name *"
-              name="lastName"
-              value={admin.lastName}
-              onChange={(e) => handleChange(idx, "lastName", e.target.value)}
-              required
-              fullWidth
-              size="small"
-            />
-            <TextField
-              label="Email *"
-              name="email"
-              value={admin.email}
-              onChange={(e) => handleChange(idx, "email", e.target.value)}
-              required
-              fullWidth
-              size="small"
-              type="email"
-            />
-            <TextField
-              label="Role/Title"
-              name="role"
-              value={admin.role}
-              onChange={(e) => handleChange(idx, "role", e.target.value)}
-              fullWidth
-              size="small"
-            />
+          <Box
+            key={idx}
+            sx={{
+              p: 2,
+              border: "1px solid",
+              borderColor: "divider",
+              borderRadius: 2,
+              position: "relative",
+            }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={3}>
+                <TextField
+                  label="First Name *"
+                  value={admin.firstName}
+                  onChange={(e) =>
+                    handleChange(idx, "firstName", e.target.value)
+                  }
+                  required
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <TextField
+                  label="Last Name *"
+                  value={admin.lastName}
+                  onChange={(e) =>
+                    handleChange(idx, "lastName", e.target.value)
+                  }
+                  required
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <TextField
+                  label="Email *"
+                  value={admin.email}
+                  onChange={(e) => handleChange(idx, "email", e.target.value)}
+                  required
+                  size="small"
+                  type="email"
+                />
+              </Grid>
+              <Grid item xs={12} md={2}>
+                <TextField
+                  label="Role/Title"
+                  value={admin.role}
+                  onChange={(e) => handleChange(idx, "role", e.target.value)}
+                  size="small"
+                />
+              </Grid>
+            </Grid>
+
             {admins.length > 1 && (
-              <IconButton aria-label="remove" onClick={() => handleRemove(idx)}>
+              <IconButton
+                onClick={() => handleRemove(idx)}
+                sx={{
+                  position: "absolute",
+                  top: 16,
+                  right: 16,
+                  color: "error.main",
+                }}
+              >
                 <DeleteIcon />
               </IconButton>
             )}
@@ -103,20 +136,22 @@ const InviteAdminsForm = ({
         ))}
 
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={handleAddAdmin} variant="contained">
+          <Button
+            onClick={handleAddAdmin}
+            variant="outlined"
+            sx={{ textTransform: "none", fontWeight: 500 }}
+          >
             Add Another Admin
           </Button>
         </Box>
-        <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
-          {onSkip && (
-            <Button variant="outlined" onClick={onSkip}>
-              Skip for Now
-            </Button>
-          )}
-          <Button variant="contained" type="submit">
+
+        <Divider />
+
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+          <Button variant="contained" type="submit" size="large">
             Send Invites
           </Button>
-        </Stack>
+        </Box>
       </Stack>
     </Paper>
   );
